@@ -1,154 +1,12 @@
-import { jsxLocPlugin } from "@builder.io/vite-plugin-jsx-loc";
-import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
-import fs from "node:fs";
+/* Style reminder: Industrial Eco-Utility — this file only configures the runtime and asset delivery; visual decisions stay in the supplied styles.css. */
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
-// =============================================================================
-// Manus Debug Collector - Vite Plugin
-// Writes browser logs directly to files, trimmed when exceeding size limit
-// =============================================================================
-
-const PROJECT_ROOT = import.meta.dirname;
-const LOG_DIR = path.join(PROJECT_ROOT, ".manus-logs");
-const MAX_LOG_SIZE_BYTES = 1 * 1024 * 1024; // 1MB per log file
-const TRIM_TARGET_BYTES = Math.floor(MAX_LOG_SIZE_BYTES * 0.6); // Trim to 60% to avoid constant re-trimming
-
-type LogSource = "browserConsole" | "networkRequests" | "sessionReplay";
-
-function ensureLogDir() {
-  if (!fs.existsSync(LOG_DIR)) {
-    fs.mkdirSync(LOG_DIR, { recursive: true });
-  }
-}
-
-function trimLogFile(logPath: string, maxSize: number) {
-  try {
-    if (!fs.existsSync(logPath) || fs.statSync(logPath).size <= maxSize) {
-      return;
-    }
-
-    const lines = fs.readFileSync(logPath, "utf-8").split("\n");
-    const keptLines: string[] = [];
-    let keptBytes = 0;
-
-    // Keep newest lines (from end) that fit within 60% of maxSize
-    const targetSize = TRIM_TARGET_BYTES;
-    for (let i = lines.length - 1; i >= 0; i--) {
-      const lineBytes = Buffer.byteLength(`${lines[i]}\n`, "utf-8");
-      if (keptBytes + lineBytes > targetSize) break;
-      keptLines.unshift(lines[i]);
-      keptBytes += lineBytes;
-    }
-
-    fs.writeFileSync(logPath, keptLines.join("\n"), "utf-8");
-  } catch {
-    /* ignore trim errors */
-  }
-}
-
-function writeToLogFile(source: LogSource, entries: unknown[]) {
-  if (entries.length === 0) return;
-
-  ensureLogDir();
-  const logPath = path.join(LOG_DIR, `${source}.log`);
-
-  // Format entries with timestamps
-  const lines = entries.map((entry) => {
-    const ts = new Date().toISOString();
-    return `[${ts}] ${JSON.stringify(entry)}`;
-  });
-
-  // Append to log file
-  fs.appendFileSync(logPath, `${lines.join("\n")}\n`, "utf-8");
-
-  // Trim if exceeds max size
-  trimLogFile(logPath, MAX_LOG_SIZE_BYTES);
-}
-
-/**
- * Vite plugin to collect browser debug logs
- * - POST /__manus__/logs: Browser sends logs, written directly to files
- * - Files: browserConsole.log, networkRequests.log, sessionReplay.log
- * - Auto-trimmed when exceeding 1MB (keeps newest entries)
- */
-function vitePluginManusDebugCollector(): Plugin {
-  return {
-    name: "manus-debug-collector",
-
-    transformIndexHtml(html) {
-      if (process.env.NODE_ENV === "production") {
-        return html;
-      }
-      return {
-        html,
-        tags: [
-          {
-            tag: "script",
-            attrs: {
-              src: "/__manus__/debug-collector.js",
-              defer: true,
-            },
-            injectTo: "head",
-          },
-        ],
-      };
-    },
-
-    configureServer(server: ViteDevServer) {
-      // POST /__manus__/logs: Browser sends logs (written directly to files)
-      server.middlewares.use("/__manus__/logs", (req, res, next) => {
-        if (req.method !== "POST") {
-          return next();
-        }
-
-        const handlePayload = (payload: any) => {
-          // Write logs directly to files
-          if (payload.consoleLogs?.length > 0) {
-            writeToLogFile("browserConsole", payload.consoleLogs);
-          }
-          if (payload.networkRequests?.length > 0) {
-            writeToLogFile("networkRequests", payload.networkRequests);
-          }
-          if (payload.sessionEvents?.length > 0) {
-            writeToLogFile("sessionReplay", payload.sessionEvents);
-          }
-
-          res.writeHead(200, { "Content-Type": "application/json" });
-          res.end(JSON.stringify({ success: true }));
-        };
-
-        const reqBody = (req as { body?: unknown }).body;
-        if (reqBody && typeof reqBody === "object") {
-          try {
-            handlePayload(reqBody);
-          } catch (e) {
-            res.writeHead(400, { "Content-Type": "application/json" });
-            res.end(JSON.stringify({ success: false, error: String(e) }));
-          }
-          return;
-        }
-
-        let body = "";
-        req.on("data", (chunk) => {
-          body += chunk.toString();
-        });
-
-        req.on("end", () => {
-          try {
-            const payload = JSON.parse(body);
-            handlePayload(payload);
-          } catch (e) {
-            res.writeHead(400, { "Content-Type": "application/json" });
-            res.end(JSON.stringify({ success: false, error: String(e) }));
-          }
-        });
-      });
-    },
-  };
-}
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 function vitePluginStorageProxy(): Plugin {
   return {
@@ -161,37 +19,30 @@ function vitePluginStorageProxy(): Plugin {
           res.end("Missing storage key");
           return;
         }
-
         const forgeBaseUrl = (process.env.BUILT_IN_FORGE_API_URL || "").replace(/\/+$/, "");
         const forgeKey = process.env.BUILT_IN_FORGE_API_KEY;
-
         if (!forgeBaseUrl || !forgeKey) {
           res.writeHead(500, { "Content-Type": "text/plain" });
           res.end("Storage proxy not configured");
           return;
         }
-
         try {
           const forgeUrl = new URL("v1/storage/presign/get", forgeBaseUrl + "/");
           forgeUrl.searchParams.set("path", key);
-
           const forgeResp = await fetch(forgeUrl, {
             headers: { Authorization: `Bearer ${forgeKey}` },
           });
-
           if (!forgeResp.ok) {
             res.writeHead(502, { "Content-Type": "text/plain" });
             res.end("Storage backend error");
             return;
           }
-
           const { url } = (await forgeResp.json()) as { url: string };
           if (!url) {
             res.writeHead(502, { "Content-Type": "text/plain" });
             res.end("Empty signed URL");
             return;
           }
-
           res.writeHead(307, { Location: url, "Cache-Control": "no-store" });
           res.end();
         } catch {
@@ -203,39 +54,46 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const assetMap: Record<string, string> = {
+  "/assets/before-roof.jpg": "/manus-storage/before-roof_180283d4.jpg",
+  "/assets/after-roof.jpg": "/manus-storage/after-roof_0bc25c3b.jpg",
+  "/assets/shingle-texture.jpg": "/manus-storage/shingle-texture_ef6fad54.jpg",
+  "/assets/soft-wash-tech.jpg": "/manus-storage/soft-wash-tech_c105cd47.jpg",
+  "/assets/roof-neglected.jpg": "/manus-storage/roof-neglected_87d72b60.jpg",
+  "/assets/roof-maintained.jpg": "/manus-storage/roof-maintained_36651cdf.jpg",
+  "/assets/roof-black-streaks.jpg": "/manus-storage/roof-black-streaks_11298dd1.jpg",
+  "/assets/roof-moss.jpg": "/manus-storage/roof-moss_6cf36e67.jpg",
+  "/assets/roof-algae.jpg": "/manus-storage/roof-algae_79556ec9.jpg",
+  "/assets/roof-lichen.jpg": "/manus-storage/roof-lichen_4c4a1d7a.jpg",
+  "/assets/roof-dirt.jpg": "/manus-storage/roof-dirt_d0d5428c.jpg",
+  "/assets/saveyourroof-logo.png": "/manus-storage/saveyourroof-logo_0a1f1d4c.png",
+};
+
+function managedAssetBridge(): Plugin {
+  return {
+    name: "saveyourroof-managed-asset-bridge",
+    enforce: "pre",
+    transform(code, id) {
+      if (!id.split("?")[0].endsWith("/SaveYourRoof.tsx")) return null;
+      let transformed = code;
+      for (const [source, target] of Object.entries(assetMap)) {
+        transformed = transformed.split(source).join(target);
+      }
+      return transformed === code ? null : { code: transformed, map: null };
+    },
+  };
+}
 
 export default defineConfig({
-  plugins,
+  root: path.resolve(projectRoot, "client"),
+  plugins: [react(), tailwindcss(), vitePluginStorageProxy(), managedAssetBridge(), vitePluginManusRuntime()],
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      "@": path.resolve(projectRoot, "client/src"),
     },
   },
-  envDir: path.resolve(import.meta.dirname),
-  root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir: path.resolve(projectRoot, "dist/public"),
     emptyOutDir: true,
-  },
-  server: {
-    port: 3000,
-    strictPort: false, // Will find next available port if 3000 is busy
-    host: true,
-    allowedHosts: [
-      ".manuspre.computer",
-      ".manus.computer",
-      ".manus-asia.computer",
-      ".manuscomputer.ai",
-      ".manusvm.computer",
-      "localhost",
-      "127.0.0.1",
-    ],
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
-    },
   },
 });
