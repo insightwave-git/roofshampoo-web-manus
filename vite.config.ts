@@ -87,6 +87,10 @@ function managedAssetBridge(): Plugin {
 export default defineConfig({
   root: path.resolve(projectRoot, "client"),
   plugins: [react(), tailwindcss(), vitePluginStorageProxy(), managedAssetBridge(), vitePluginManusRuntime()],
+  server: {
+    host: true,
+    allowedHosts: [".manus.computer", ".manus.space"],
+  },
   resolve: {
     alias: {
       "@": path.resolve(projectRoot, "client/src"),
