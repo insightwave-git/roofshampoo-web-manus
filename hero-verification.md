@@ -13,3 +13,5 @@ Final PNG logo verification: the header, footer, and hero mascot all resolved to
 Contrast revision verification: the hero tagline `CLEAN · RESTORE · SAVE $` computed to `rgb(255, 255, 255)` with opacity `1`; the animated PNG loaded at a rendered width of `320px`. Header and footer images both resolved to `/manus-storage/saveyourroof-mascot_cef3713f.jpg` and loaded successfully, confirming their previous treatment was restored. The header was visible after the intro.
 
 Transparent chrome revision verification: computed header and footer backgrounds were both `rgba(0, 0, 0, 0)`. The header remained visible after the intro and both chrome logos still resolved to the previous mascot JPG. The hero frame rendered at 320px wide; the white `CLEAN · RESTORE · SAVE $` tagline rendered at the same width and was confirmed centered beneath the logo.
+
+White-header visibility verification: after the hero intro, the header computed to `rgb(255, 255, 255)` with opacity `1`; its logo, desktop navigation, phone link, and `Get a Quote` CTA were all visible and the logo loaded successfully. The footer remained transparent, and the hero tagline remained white.

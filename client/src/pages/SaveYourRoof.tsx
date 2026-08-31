@@ -136,7 +136,7 @@ function Header({ revealed }: { revealed: boolean }) {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 bg-transparent shadow-none transition-opacity duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 bg-white shadow-[0_2px_16px_-6px_rgba(18,58,92,0.35)] transition-opacity duration-500 ${
         revealed ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
