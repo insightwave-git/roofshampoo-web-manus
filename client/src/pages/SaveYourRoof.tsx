@@ -35,7 +35,7 @@ const IMG = {
   dirt: "/assets/roof-dirt.jpg",
   logo: "/assets/saveyourroof-logo.png",
   /** Mascot lockup for the hero spin-in. Prefer a PNG with transparency in Manus. */
-  mascot: "/assets/saveyourroof-mascot.jpg",
+  mascot: "/assets/SaveYourRoof_Final09Artboard7.png",
 };
 
 const HERO_MS = {
@@ -314,7 +314,7 @@ function Hero({ onIntroChange }: { onIntroChange: (done: boolean) => void }) {
           <img
             src={IMG.mascot}
             alt="SaveYourRoof.com"
-            className="hero-mascot mx-auto h-auto w-[min(78vw,420px)]"
+            className="hero-mascot mx-auto h-auto w-[min(78vw,320px)]"
           />
           <h1 className="mt-3 font-display text-[11vw] font-extrabold leading-[0.9] tracking-[-0.04em] text-white sm:text-6xl md:text-7xl">
             ROOF SHAMPOO
