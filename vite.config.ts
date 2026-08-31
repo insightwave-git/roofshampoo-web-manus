@@ -67,6 +67,7 @@ const assetMap: Record<string, string> = {
   "/assets/roof-lichen.jpg": "/manus-storage/roof-lichen_4c4a1d7a.jpg",
   "/assets/roof-dirt.jpg": "/manus-storage/roof-dirt_d0d5428c.jpg",
   "/assets/saveyourroof-logo.png": "/manus-storage/saveyourroof-logo_0a1f1d4c.png",
+  "/assets/saveyourroof-mascot.jpg": "/manus-storage/saveyourroof-mascot_cef3713f.jpg",
 };
 
 function managedAssetBridge(): Plugin {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 
 /* ========================================================================
    SAVEYOURROOF.COM — Roof Shampoo landing page
@@ -34,7 +34,16 @@ const IMG = {
   lichen: "/assets/roof-lichen.jpg",
   dirt: "/assets/roof-dirt.jpg",
   logo: "/assets/saveyourroof-logo.png",
+  /** Mascot lockup for the hero spin-in. Prefer a PNG with transparency in Manus. */
+  mascot: "/assets/saveyourroof-mascot.jpg",
 };
+
+const HERO_MS = {
+  dirtyHold: 1200,
+  fade: 1800,
+  cleanHold: 400,
+  logoSpin: 1000,
+} as const;
 
 const NAV = [
   { label: "Why Roof Shampoo", id: "why" },
@@ -116,7 +125,7 @@ function PhoneIcon({ className = "h-4 w-4 text-cyan" }: { className?: string }) 
 /*  HEADER                                                             */
 /* ------------------------------------------------------------------ */
 
-function Header() {
+function Header({ revealed }: { revealed: boolean }) {
   const [open, setOpen] = useState(false);
 
   const go = (id: string) => {
@@ -125,7 +134,11 @@ function Header() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-white shadow-[0_2px_16px_-6px_rgba(18,58,92,0.35)]">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 bg-white shadow-[0_2px_16px_-6px_rgba(18,58,92,0.35)] transition-opacity duration-500 ${
+        revealed ? "opacity-100" : "pointer-events-none opacity-0"
+      }`}
+    >
       <div className="shell relative flex flex-col items-center gap-2 py-3 md:gap-3 md:py-4">
         <a
           href="#top"
@@ -192,49 +205,131 @@ function Header() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  1. HERO — before/after diptych                                     */
+/*  1. HERO — dirty roof fades to clean, then Roof Shampoo lockup      */
 /* ------------------------------------------------------------------ */
 
-function Hero() {
+function Hero({ onIntroChange }: { onIntroChange: (done: boolean) => void }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const timers = useRef<number[]>([]);
+  const inViewRef = useRef(false);
+  const [playId, setPlayId] = useState(0);
+  const [fading, setFading] = useState(false);
+  const [logoIn, setLogoIn] = useState(false);
+  const [ctaIn, setCtaIn] = useState(false);
+  const [skipMotion, setSkipMotion] = useState(false);
+
+  const clearTimers = () => {
+    timers.current.forEach((id) => window.clearTimeout(id));
+    timers.current = [];
+  };
+
+  const snapDone = useCallback(() => {
+    clearTimers();
+    setFading(true);
+    setLogoIn(true);
+    setCtaIn(true);
+    onIntroChange(true);
+  }, [onIntroChange]);
+
+  const resetIntro = useCallback(() => {
+    clearTimers();
+    setFading(false);
+    setLogoIn(false);
+    setCtaIn(false);
+    onIntroChange(false);
+  }, [onIntroChange]);
+
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setSkipMotion(reduce);
+
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const enough = entry.isIntersecting && entry.intersectionRatio >= 0.4;
+        const gone = !entry.isIntersecting || entry.intersectionRatio < 0.15;
+
+        if (enough && !inViewRef.current) {
+          inViewRef.current = true;
+          if (reduce) {
+            snapDone();
+            return;
+          }
+          setPlayId((n) => n + 1);
+        } else if (gone && inViewRef.current) {
+          inViewRef.current = false;
+          resetIntro();
+        }
+      },
+      { threshold: [0, 0.15, 0.4, 0.6] },
+    );
+
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      clearTimers();
+    };
+  }, [resetIntro, snapDone]);
+
+  useEffect(() => {
+    if (playId === 0 || skipMotion) return;
+
+    resetIntro();
+
+    const tFade = window.setTimeout(() => setFading(true), HERO_MS.dirtyHold);
+    const tLogo = window.setTimeout(() => setLogoIn(true), HERO_MS.dirtyHold + HERO_MS.fade + HERO_MS.cleanHold);
+    const tDone = window.setTimeout(
+      () => {
+        setCtaIn(true);
+        onIntroChange(true);
+      },
+      HERO_MS.dirtyHold + HERO_MS.fade + HERO_MS.cleanHold + HERO_MS.logoSpin,
+    );
+
+    timers.current = [tFade, tLogo, tDone];
+    return () => clearTimers();
+  }, [playId, skipMotion, resetIntro, onIntroChange]);
+
   return (
-    <section id="top" className="relative flex min-h-[100svh] items-end overflow-hidden">
-      <div className="absolute inset-0 grid grid-cols-2">
-        <div className="relative overflow-hidden">
-          <img src={IMG.beforeRoof} alt="Asphalt shingle roof heavily stained with black algae streaks before cleaning" className="h-full w-full object-cover" />
-          <span className="absolute left-4 top-24 rounded-full bg-navy/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white md:left-8 md:top-28">
-            Before
-          </span>
-        </div>
-        <div className="relative overflow-hidden">
-          <img src={IMG.afterRoof} alt="The same roof clean and streak-free after a Roof Shampoo treatment" className="h-full w-full object-cover" />
-          <span className="absolute right-4 top-24 rounded-full bg-green px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white md:right-8 md:top-28">
-            After
-          </span>
-        </div>
+    <section ref={sectionRef} id="top" className="hero-cinematic relative min-h-[100svh] overflow-hidden bg-navy-deep">
+      <div className="absolute inset-0">
+        <img
+          src={IMG.beforeRoof}
+          alt="Asphalt shingle roof heavily stained with black algae streaks before cleaning"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <img
+          src={IMG.afterRoof}
+          alt="The same roof clean and streak-free after a Roof Shampoo treatment"
+          className={`hero-clean absolute inset-0 h-full w-full object-cover ${fading ? "is-fading" : ""}`}
+        />
       </div>
 
-      <div className="absolute inset-y-0 left-1/2 z-10 w-[3px] -translate-x-1/2 bg-white/80" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/75 to-navy/20" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/15 to-transparent" />
 
-      <div className="shell relative z-20 pb-24 pt-32 text-center md:pb-32">
-        <h1 className="text-[15vw] leading-[0.88] text-white sm:text-7xl md:text-8xl lg:text-[7.5rem]">ROOF SHAMPOO</h1>
-        <p className="mt-4 font-display text-lg font-extrabold text-cyan md:text-2xl">at SaveYourRoof.com</p>
-        <p className="mx-auto mt-7 max-w-2xl text-lg text-white/90 md:text-xl">
-          The <strong className="text-green">non-bleach</strong> way to clean a roof. No harsh chemicals, no pressure damage, no dead landscaping — just a roof
-          that looks new again.
-        </p>
-        <div className="mt-9">
-          <button className="btn-green px-8 py-4 text-base tracking-wide" onClick={() => scrollToId("quote")}>
-            GET A QUOTE NOW
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6">
+        <div className={`hero-lockup text-center ${logoIn ? "is-in" : ""}`}>
+          <img
+            src={IMG.mascot}
+            alt="SaveYourRoof.com"
+            className="hero-mascot mx-auto h-auto w-[min(78vw,420px)]"
+          />
+          <h1 className="mt-3 font-display text-[11vw] font-extrabold leading-[0.9] tracking-[-0.04em] text-white sm:text-6xl md:text-7xl">
+            ROOF SHAMPOO
+          </h1>
+        </div>
+
+        <div className={`hero-cta mt-8 ${ctaIn ? "is-in" : ""}`}>
+          <button
+            type="button"
+            className="btn-green px-6 py-3 text-sm tracking-wide md:text-[15px]"
+            onClick={() => scrollToId("quote")}
+          >
+            Get a Quote
           </button>
-          <p className="mt-3 text-sm text-white/85">Free quote, no obligation.</p>
         </div>
-      </div>
-
-      <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-white/70" aria-hidden="true">
-        <svg viewBox="0 0 24 24" className="h-6 w-6 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
       </div>
     </section>
   );
@@ -777,12 +872,14 @@ function MobileBar() {
 
 export default function SaveYourRoof() {
   useReveal();
+  const [headerIn, setHeaderIn] = useState(false);
+  const onIntroChange = useCallback((done: boolean) => setHeaderIn(done), []);
 
   return (
     <div className="min-h-screen bg-white pb-[72px] md:pb-0">
-      <Header />
+      <Header revealed={headerIn} />
       <main>
-        <Hero />
+        <Hero onIntroChange={onIntroChange} />
         <WhyBand />
         <Problem />
         <Difference />

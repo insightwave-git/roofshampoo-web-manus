@@ -110,6 +110,64 @@ section[id] {
   transform: none;
 }
 
+/* ---- cinematic hero (Manus-safe: opacity + transform only) ---- */
+
+.hero-clean {
+  opacity: 0;
+}
+
+.hero-clean.is-fading {
+  opacity: 1;
+  transition: opacity 1.8s ease-in-out;
+}
+
+.hero-lockup {
+  opacity: 0;
+  transform: scale(0.35) rotate(-360deg);
+  will-change: transform, opacity;
+}
+
+.hero-lockup.is-in {
+  animation: hero-logo-spin 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-mascot {
+  mix-blend-mode: multiply;
+}
+
+.hero-cta {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+.hero-cta.is-in {
+  pointer-events: auto;
+  animation: hero-cta-in 0.45s ease-out forwards;
+}
+
+@keyframes hero-logo-spin {
+  from {
+    opacity: 0;
+    transform: scale(0.35) rotate(-360deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes hero-cta-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -118,5 +176,22 @@ section[id] {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  .hero-clean {
+    opacity: 1;
+    transition: none;
+  }
+  .hero-lockup,
+  .hero-lockup.is-in {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .hero-cta,
+  .hero-cta.is-in {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    pointer-events: auto;
   }
 }
