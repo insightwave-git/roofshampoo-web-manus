@@ -320,9 +320,6 @@ function Hero({ onIntroChange }: { onIntroChange: (done: boolean) => void }) {
             />
           </div>
           <p className="hero-mascot-tagline">CLEAN · RESTORE · SAVE $</p>
-          <h1 className="mt-3 font-display text-[11vw] font-extrabold leading-[0.9] tracking-[-0.04em] text-white sm:text-6xl md:text-7xl">
-            ROOF SHAMPOO
-          </h1>
         </div>
 
         <div className={`hero-cta mt-8 ${ctaIn ? "is-in" : ""}`}>
