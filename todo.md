@@ -1,7 +1,7 @@
-# Shared animated logo correction
+# Original header/footer logo restoration
 
-- [x] Inspect the current header, footer, and hero logo source mappings.
-- [x] Point the header and footer logo sources to the exact PNG used by the spinning hero logo.
-- [x] Preserve the white header, transparent footer, hero CTA, and all other layout behavior.
-- [x] Render desktop and mobile previews and verify all three logo placements match.
-- [x] Run checks, save a checkpoint, and deliver the corrected project.
+- [x] Confirm the original header/footer logo asset and current mappings.
+- [x] Restore the original logo for the header and footer only.
+- [x] Keep SaveYourRoof_Final09Artboard7.png exclusively for the spinning hero.
+- [x] Render desktop and mobile previews and verify improved header/footer visibility.
+- [x] Run checks, save a checkpoint, and deliver the approved revision.
