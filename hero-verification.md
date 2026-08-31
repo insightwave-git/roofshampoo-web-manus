@@ -19,3 +19,5 @@ White-header visibility verification: after the hero intro, the header computed 
 Shared-logo correction verification: after the hero intro, the header, footer, and `.hero-mascot` all resolved to `/manus-storage/SaveYourRoof_Final09Artboard7_dd964ce4.png`, confirming an exact asset match. The header background computed to white, the footer remained transparent, and the hero `Get a Quote` CTA was visible.
 
 Original-logo restoration verification: after the hero intro, header and footer both resolved to `/manus-storage/saveyourroof-logo_0a1f1d4c.png`, while `.hero-mascot` resolved to `/manus-storage/SaveYourRoof_Final09Artboard7_dd964ce4.png`. The header computed to white and the footer to transparent, confirming the requested separation and preserved surfaces.
+
+Mascot JPG correction verification: after the hero intro, header and footer both resolved to `/manus-storage/saveyourroof-mascot_cef3713f.jpg`, while the hero resolved to `/manus-storage/SaveYourRoof_Final09Artboard7_dd964ce4.png`. The header remained white and the footer transparent, confirming the requested logo assignments and preserved surfaces.
