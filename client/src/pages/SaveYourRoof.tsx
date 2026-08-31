@@ -147,7 +147,7 @@ function Header({ revealed }: { revealed: boolean }) {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
-          <img src={IMG.logo} alt="SaveYourRoof.com" className="h-12 w-auto md:h-14" />
+          <img src={IMG.mascot} alt="SaveYourRoof.com" className="h-12 w-auto md:h-14 object-contain" />
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-5 lg:flex">
@@ -835,7 +835,7 @@ function Footer() {
   return (
     <footer className="bg-navy-deep py-14">
       <div className="shell flex flex-col items-center gap-6 text-center">
-        <img src={IMG.logo} alt="SaveYourRoof.com" className="h-14 w-auto brightness-0 invert" />
+        <img src={IMG.mascot} alt="SaveYourRoof.com" className="h-14 w-auto object-contain" />
         <p className="font-display text-lg font-extrabold text-white">Clean · Restore · Save $</p>
         <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {NAV.map((item) => (
