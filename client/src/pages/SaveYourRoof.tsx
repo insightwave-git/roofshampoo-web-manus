@@ -34,7 +34,7 @@ const IMG = {
   lichen: "/assets/roof-lichen.jpg",
   dirt: "/assets/roof-dirt.jpg",
   logo: "/assets/saveyourroof-logo.png",
-  siteLogo: "/assets/saveyourroof-mascot.jpg",
+  siteLogo: "/assets/SaveYourRoof_Final09Artboard7.png",
   /** Mascot lockup for the hero spin-in. Prefer a PNG with transparency in Manus. */
   mascot: "/assets/SaveYourRoof_Final09Artboard7.png",
 };
