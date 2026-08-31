@@ -1,8 +1,7 @@
-# Final logo and hero sizing update
+# Hero tagline contrast revision
 
-- [x] Confirm the current header, footer, and hero logo references.
-- [x] Upload `SaveYourRoof_Final09Artboard7.png` through managed storage.
-- [x] Replace the header, footer, and spinning hero logo source with the new PNG.
-- [x] Reduce the hero lockup to about 320px maximum desktop width and 78vw mobile width.
-- [x] Render and verify that the roof background remains visible after the effect.
-- [x] Run checks, save a checkpoint, and deliver the updated project.
+- [x] Inspect the previous header/footer logo treatment and current animated hero markup.
+- [x] Restore the header and footer logo source to the previous mascot treatment.
+- [x] Make only the animated hero tagline beneath the logo white for contrast.
+- [x] Render desktop and mobile previews and verify the hero background remains visible.
+- [x] Run checks, save a checkpoint, and deliver the revised project.

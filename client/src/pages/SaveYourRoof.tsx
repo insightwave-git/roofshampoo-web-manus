@@ -34,6 +34,7 @@ const IMG = {
   lichen: "/assets/roof-lichen.jpg",
   dirt: "/assets/roof-dirt.jpg",
   logo: "/assets/saveyourroof-logo.png",
+  siteLogo: "/assets/saveyourroof-mascot.jpg",
   /** Mascot lockup for the hero spin-in. Prefer a PNG with transparency in Manus. */
   mascot: "/assets/SaveYourRoof_Final09Artboard7.png",
 };
@@ -147,7 +148,7 @@ function Header({ revealed }: { revealed: boolean }) {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
-          <img src={IMG.mascot} alt="SaveYourRoof.com" className="h-12 w-auto md:h-14 object-contain" />
+          <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-12 w-auto md:h-14 object-contain" />
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-5 lg:flex">
@@ -311,11 +312,14 @@ function Hero({ onIntroChange }: { onIntroChange: (done: boolean) => void }) {
 
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6">
         <div className={`hero-lockup text-center ${logoIn ? "is-in" : ""}`}>
-          <img
-            src={IMG.mascot}
-            alt="SaveYourRoof.com"
-            className="hero-mascot mx-auto h-auto w-[min(78vw,320px)]"
-          />
+          <div className="hero-mascot-frame">
+            <img
+              src={IMG.mascot}
+              alt="SaveYourRoof.com"
+              className="hero-mascot mx-auto h-auto w-full"
+            />
+          </div>
+          <p className="hero-mascot-tagline">CLEAN · RESTORE · SAVE $</p>
           <h1 className="mt-3 font-display text-[11vw] font-extrabold leading-[0.9] tracking-[-0.04em] text-white sm:text-6xl md:text-7xl">
             ROOF SHAMPOO
           </h1>
@@ -835,7 +839,7 @@ function Footer() {
   return (
     <footer className="bg-navy-deep py-14">
       <div className="shell flex flex-col items-center gap-6 text-center">
-        <img src={IMG.mascot} alt="SaveYourRoof.com" className="h-14 w-auto object-contain" />
+        <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-14 w-auto object-contain" />
         <p className="font-display text-lg font-extrabold text-white">Clean · Restore · Save $</p>
         <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {NAV.map((item) => (

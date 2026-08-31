@@ -131,8 +131,29 @@ section[id] {
   animation: hero-logo-spin 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+.hero-mascot-frame {
+  width: min(78vw, 320px);
+  aspect-ratio: 1 / 0.76;
+  overflow: hidden;
+}
+
 .hero-mascot {
+  display: block;
+  width: 100%;
+  max-width: none;
   mix-blend-mode: multiply;
+}
+
+.hero-mascot-tagline {
+  margin-top: 0.35rem;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: clamp(0.72rem, 2vw, 0.95rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(13, 42, 67, 0.55);
 }
 
 .hero-cta {
