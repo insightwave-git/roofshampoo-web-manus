@@ -136,7 +136,7 @@ function Header({ revealed }: { revealed: boolean }) {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 bg-white shadow-[0_2px_16px_-6px_rgba(18,58,92,0.35)] transition-opacity duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 bg-transparent shadow-none transition-opacity duration-500 ${
         revealed ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
@@ -837,22 +837,22 @@ function ClosingCta() {
 
 function Footer() {
   return (
-    <footer className="bg-navy-deep py-14">
+    <footer className="bg-transparent py-14 text-navy">
       <div className="shell flex flex-col items-center gap-6 text-center">
         <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-14 w-auto object-contain" />
-        <p className="font-display text-lg font-extrabold text-white">Clean · Restore · Save $</p>
+        <p className="font-display text-lg font-extrabold text-navy">Clean · Restore · Save $</p>
         <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {NAV.map((item) => (
-            <button key={item.id} onClick={() => scrollToId(item.id)} className="text-sm text-white/75 hover:text-white">
+            <button key={item.id} onClick={() => scrollToId(item.id)} className="text-sm text-navy/70 hover:text-navy">
               {item.label}
             </button>
           ))}
         </nav>
-        <a href={TEL} className="flex items-center gap-2 font-semibold text-white">
-          <PhoneIcon className="h-4 w-4 text-white" />
+        <a href={TEL} className="flex items-center gap-2 font-semibold text-navy">
+          <PhoneIcon className="h-4 w-4 text-navy" />
           {PHONE}
         </a>
-        <p className="text-xs text-white/50">© 2026 Save Your Roof. All Rights Reserved</p>
+        <p className="text-xs text-navy/60">© 2026 Save Your Roof. All Rights Reserved</p>
       </div>
     </footer>
   );

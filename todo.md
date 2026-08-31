@@ -1,7 +1,7 @@
-# Hero tagline contrast revision
+# Transparent chrome and hero alignment revision
 
-- [x] Inspect the previous header/footer logo treatment and current animated hero markup.
-- [x] Restore the header and footer logo source to the previous mascot treatment.
-- [x] Make only the animated hero tagline beneath the logo white for contrast.
-- [x] Render desktop and mobile previews and verify the hero background remains visible.
+- [x] Inspect current header/footer backgrounds and hero tagline layout.
+- [x] Make the header and footer backgrounds transparent without changing their content or controls.
+- [x] Center `CLEAN · RESTORE · SAVE $` directly beneath the spinning hero logo.
+- [x] Render desktop and mobile previews and verify the alignment and contrast.
 - [x] Run checks, save a checkpoint, and deliver the revised project.
