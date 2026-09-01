@@ -10,8 +10,8 @@ import { useCallback, useEffect, useRef, useState, type FormEvent } from "react"
 /*  CONFIG — edit these                                                */
 /* ------------------------------------------------------------------ */
 
-const PHONE = "(724) 555-0143";
-const TEL = "tel:+17245550143";
+const PHONE = "724 201 6907";
+const TEL = "tel:+17242016907";
 
 /**
  * Replace each value with an imported asset or a hosted URL.

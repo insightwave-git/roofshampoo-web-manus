@@ -35,3 +35,5 @@ Focused placement verification: desktop and mobile renders confirm the vertical 
 Final spacing verification: after the position-only adjustment from `right: 20%` to `right: 17%`, desktop and mobile renders show the vertical `.COM` clearing the final O in ROOFSHAMPOO. Color, size, orientation, height, artwork, and all other page styling remain unchanged.
 
 Follow-up alignment verification: changed only `.hero-mascot-com` from `top: 78%` to `top: 80%`. Desktop and mobile renders show the vertical `.COM` sitting slightly lower beside the final O, with its color, size, orientation, height, and wordmark spacing otherwise preserved.
+
+Live phone-number verification: the centralized phone configuration now displays `724 201 6907` and uses `tel:+17242016907`. All header, footer, contact, and mobile call-action links reference the same `TEL` constant. TypeScript and production builds passed, and responsive full-page renders completed successfully after the hero intro.

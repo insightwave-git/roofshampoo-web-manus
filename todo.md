@@ -13,3 +13,10 @@
 - [ ] Preserve the existing color, size, orientation, and height.
 - [ ] Verify desktop and mobile previews.
 - [ ] Save a new checkpoint and deliver the correction.
+
+## Live phone-number update
+
+- [x] Locate every displayed and linked fictional phone number.
+- [x] Replace it with `724 201 6907` and `tel:+17242016907`.
+- [x] Verify the header, footer, and mobile call action.
+- [ ] Save a new checkpoint and deliver the update.
