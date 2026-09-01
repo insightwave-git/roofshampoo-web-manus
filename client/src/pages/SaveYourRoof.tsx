@@ -148,7 +148,7 @@ function Header({ revealed }: { revealed: boolean }) {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
-          <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-12 w-auto md:h-14 object-contain" />
+          <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-20 w-auto object-contain md:h-24" />
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-5 lg:flex">
@@ -318,6 +318,7 @@ function Hero({ onIntroChange }: { onIntroChange: (done: boolean) => void }) {
               alt="SaveYourRoof.com"
               className="hero-mascot mx-auto h-auto w-full"
             />
+            <span className="hero-mascot-com" aria-hidden="true">.COM</span>
           </div>
           <p className="hero-mascot-tagline">CLEAN · RESTORE · SAVE $</p>
         </div>
@@ -434,17 +435,6 @@ const METHODS = [
     ],
   },
   {
-    name: "Bleach & Chlorine",
-    tag: "The cheap shortcut",
-    good: false,
-    points: [
-      "Kills growth on contact, but keeps working after it leaves the roof",
-      "Runs into gutters, garden beds, grass and downspouts",
-      "Corrodes metal flashing, fasteners and gutter hardware",
-      "Fumes and residue around the house while it dries",
-    ],
-  },
-  {
     name: "Roof Shampoo",
     tag: "What we do",
     good: true,
@@ -453,6 +443,17 @@ const METHODS = [
       "No bleach, no phosphates, no harsh chemicals of any kind",
       "Breaks down organic growth, then breaks down itself",
       "Safe for pets, plants, people and the shingles underneath",
+    ],
+  },
+  {
+    name: "Bleach & Chlorine",
+    tag: "The cheap shortcut",
+    good: false,
+    points: [
+      "Kills growth on contact, but keeps working after it leaves the roof",
+      "Runs into gutters, garden beds, grass and downspouts",
+      "Corrodes metal flashing, fasteners and gutter hardware",
+      "Fumes and residue around the house while it dries",
     ],
   },
 ];
@@ -474,11 +475,14 @@ function Difference() {
               key={m.name}
               className={`reveal rounded-2xl p-8 ${
                 m.good
-                  ? "border-t-4 border-green bg-offwhite shadow-[0_28px_60px_-28px_rgba(18,58,92,0.6)] lg:-mt-4"
+                  ? "border-t-4 border-green bg-offwhite shadow-[0_28px_60px_-28px_rgba(18,58,92,0.6)] lg:z-10 lg:-mt-4 lg:scale-[1.02]"
                   : "border-t-4 border-navy/15 bg-white ring-1 ring-navy/10"
               }`}
               data-reveal-delay={i * 120}
             >
+              {m.good && (
+                <img src={IMG.mascot} alt="" aria-hidden="true" className="difference-card-logo mx-auto mb-6 h-20 w-auto object-contain" />
+              )}
               <span
                 className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${
                   m.good ? "bg-green/12 text-green" : "bg-navy/8 text-navy/55"
@@ -624,7 +628,7 @@ function Lifespan() {
               </div>
             </div>
             <figcaption className="border-t-4 border-clay bg-navy p-5 text-center">
-              <p className="font-display text-3xl font-extrabold text-white md:text-4xl">−10 Years</p>
+              <p className="font-display text-3xl font-extrabold text-white md:text-4xl">LOSE 10 YEARS</p>
             </figcaption>
           </figure>
 
@@ -636,7 +640,7 @@ function Lifespan() {
               </div>
             </div>
             <figcaption className="border-t-4 border-green bg-navy p-5 text-center">
-              <p className="font-display text-3xl font-extrabold text-white md:text-4xl">Full Term Reached</p>
+              <p className="font-display text-3xl font-extrabold text-white md:text-4xl">GAIN 10 YEARS</p>
             </figcaption>
           </figure>
         </div>
@@ -836,7 +840,7 @@ function Footer() {
   return (
     <footer className="bg-transparent py-14 text-navy">
       <div className="shell flex flex-col items-center gap-6 text-center">
-        <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-14 w-auto object-contain" />
+        <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-24 w-auto object-contain md:h-28" />
         <p className="font-display text-lg font-extrabold text-navy">Clean · Restore · Save $</p>
         <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {NAV.map((item) => (

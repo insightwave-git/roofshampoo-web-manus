@@ -1,7 +1,9 @@
-# Shared hero PNG logo correction
+# Approved four-part revision
 
-- [x] Confirm the current header/footer and hero asset mappings.
-- [x] Set the header and footer logo source to `SaveYourRoof_Final09Artboard7.png`.
-- [x] Preserve the white header, transparent footer, centered tagline, CTA, and all other page behavior.
-- [x] Render desktop and mobile previews and verify all three logo placements match.
-- [x] Run checks, save a checkpoint, and deliver the corrected revision.
+- [x] Inspect current logo sizing, hero mark, Difference cards, and Math labels.
+- [x] Enlarge header/footer logos to the approved responsive sizes.
+- [x] Improve the hero `.com` contrast to match the `ROOF` color.
+- [x] Center and emphasize the What We Do card with a compact Roof Shampoo logo badge.
+- [x] Change the Math labels to `LOSE 10 YEARS` and `GAIN 10 YEARS`.
+- [x] Render desktop and mobile previews and verify the four revisions.
+- [x] Run checks, save a checkpoint, and deliver the approved revision.
