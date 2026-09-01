@@ -148,7 +148,7 @@ function Header({ revealed }: { revealed: boolean }) {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
-          <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-20 w-auto object-contain md:h-24" />
+          <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-auto w-[144px] object-contain md:w-[176px]" />
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-5 lg:flex">
@@ -481,7 +481,7 @@ function Difference() {
               data-reveal-delay={i * 120}
             >
               {m.good && (
-                <img src={IMG.mascot} alt="" aria-hidden="true" className="difference-card-logo mx-auto mb-6 h-20 w-auto object-contain" />
+                <img src={IMG.mascot} alt="" aria-hidden="true" className="difference-card-logo mx-auto mb-6 h-auto w-[112px] object-contain md:w-[136px]" />
               )}
               <span
                 className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${
@@ -840,7 +840,7 @@ function Footer() {
   return (
     <footer className="bg-transparent py-14 text-navy">
       <div className="shell flex flex-col items-center gap-6 text-center">
-        <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-24 w-auto object-contain md:h-28" />
+        <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-auto w-[184px] object-contain md:w-[224px]" />
         <p className="font-display text-lg font-extrabold text-navy">Clean · Restore · Save $</p>
         <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {NAV.map((item) => (

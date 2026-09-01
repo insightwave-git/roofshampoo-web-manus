@@ -147,12 +147,15 @@ section[id] {
 
 .hero-mascot-com {
   position: absolute;
-  top: 61%;
-  right: 4%;
+  top: 58%;
+  right: 5%;
   z-index: 2;
+  display: inline-flex;
+  height: clamp(30px, 3.2vw, 40px);
+  align-items: center;
   color: var(--color-cyan);
   font-family: var(--font-display);
-  font-size: clamp(0.42rem, 1.15vw, 0.66rem);
+  font-size: clamp(0.62rem, 1.15vw, 0.78rem);
   font-weight: 800;
   letter-spacing: 0.04em;
   line-height: 1;
