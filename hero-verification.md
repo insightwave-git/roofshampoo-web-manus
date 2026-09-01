@@ -33,3 +33,5 @@ Exact wordmark correction verification: after tightening the crop to 20% and mov
 Focused placement verification: desktop and mobile renders confirm the vertical `.COM` moved down beside the ROOFSHAMPOO wordmark, away from the person/upper artwork. Its cyan color, scale, and vertical orientation were not changed. The hero background, tagline, CTA, header, footer, and page layout remain unchanged.
 
 Final spacing verification: after the position-only adjustment from `right: 20%` to `right: 17%`, desktop and mobile renders show the vertical `.COM` clearing the final O in ROOFSHAMPOO. Color, size, orientation, height, artwork, and all other page styling remain unchanged.
+
+Follow-up alignment verification: changed only `.hero-mascot-com` from `top: 78%` to `top: 80%`. Desktop and mobile renders show the vertical `.COM` sitting slightly lower beside the final O, with its color, size, orientation, height, and wordmark spacing otherwise preserved.
