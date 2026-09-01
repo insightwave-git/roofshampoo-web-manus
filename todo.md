@@ -1,9 +1,7 @@
-# Approved logo readability revision
+# Hero `.COM` placement correction
 
-- [x] Inspect the current hero `.COM` overlay and logo sizing rules.
-- [x] Position vertical `.COM` immediately after the wordmark and match the wordmark height.
-- [x] Enlarge the header logo to approximately 176px desktop and 144px mobile.
-- [x] Enlarge the footer logo to approximately 224px desktop and 184px mobile.
-- [x] Enlarge the What We Do card logo to approximately 136px desktop and 112px mobile.
-- [x] Render desktop and mobile previews and verify readability and alignment.
-- [x] Run checks, save a checkpoint, and deliver the approved revision.
+- [x] Inspect the current hero wordmark and separate `.COM` overlay.
+- [x] Remove the outside `.COM` overlay entirely.
+- [x] Place `.COM` directly after the ROOF SHAMPOO wordmark in matching blue and height.
+- [x] Render desktop and mobile previews and verify the hero placement.
+- [x] Run checks, save a checkpoint, and deliver the corrected revision.
