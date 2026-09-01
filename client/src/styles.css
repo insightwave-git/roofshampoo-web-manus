@@ -142,14 +142,14 @@ section[id] {
   display: block;
   width: 100%;
   max-width: none;
-  clip-path: inset(0 14% 0 0);
+  clip-path: inset(0 20% 0 0);
   mix-blend-mode: multiply;
 }
 
 .hero-mascot-com {
   position: absolute;
-  top: 70%;
-  right: 14%;
+  top: 69%;
+  right: 20%;
   z-index: 2;
   display: inline-flex;
   height: clamp(30px, 3.2vw, 40px);
