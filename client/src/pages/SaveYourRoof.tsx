@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import HowItWorksExplainer from "@/components/HowItWorksExplainer";
 
 /* ========================================================================
    SAVEYOURROOF.COM — Roof Shampoo landing page
@@ -537,28 +538,7 @@ function HowItWorks() {
           </div>
         </div>
 
-        <img
-          src={IMG.softWashTech}
-          alt="Technician on a residential shingle roof applying a low-pressure soft wash with a wand"
-          loading="lazy"
-          className="mt-14 h-[300px] w-full rounded-2xl object-cover md:h-[440px]"
-        />
-
-        <ol className="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((s, i) => (
-            <li key={s.n} className="reveal" data-reveal-delay={i * 120}>
-              <span
-                className={`font-display text-5xl font-extrabold md:text-6xl ${i === 3 ? "text-green" : "text-cyan"}`}
-                style={{ WebkitTextStroke: "1.5px currentColor", color: "transparent" }}
-                aria-hidden="true"
-              >
-                {s.n}
-              </span>
-              <h3 className="mt-4 text-lg text-navy">{s.t}</h3>
-              <p className="mt-2 text-[16px] text-navy/70">{s.d}</p>
-            </li>
-          ))}
-        </ol>
+        <HowItWorksExplainer onQuote={() => scrollToId("quote")} />
       </div>
     </section>
   );

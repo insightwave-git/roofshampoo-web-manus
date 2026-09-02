@@ -20,3 +20,19 @@
 - [x] Replace it with `724 201 6907` and `tel:+17242016907`.
 - [x] Verify the header, footer, and mobile call action.
 - [ ] Save a new checkpoint and deliver the update.
+
+## How It Works explainer video
+
+- [ ] Prepare the approved female U.S. English narration brief and four-step script.
+- [ ] Generate and record narration metadata for the editable composition.
+- [ ] Build the 1920×1080 HyperFrames/GSAP explainer with captions and branded end frame.
+- [ ] Embed the interactive player with 50% viewport triggering, replay/reset behavior, sound control, and fallback transcript.
+- [ ] Validate the interactive preview on desktop and mobile.
+- [ ] Pause for user approval before rendering the final MP4.
+
+## Explainer stale-render correction
+
+- [ ] Trace the route and confirm whether the old static image is still rendered.
+- [ ] Fix any stale route, build, or preview reference so the explainer replaces the image.
+- [ ] Verify the live section on desktop and mobile.
+- [ ] Report the corrected preview and wait for approval before final MP4 rendering.
