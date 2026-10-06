@@ -200,6 +200,10 @@ section[id] {
   transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 240ms ease, border-color 240ms ease;
 }
 
+.service-card {
+  transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 240ms ease, border-color 240ms ease;
+}
+
 @media (hover: hover) {
   .difference-card:hover,
   .difference-card:focus-within {
@@ -208,11 +212,25 @@ section[id] {
     box-shadow: 0 24px 48px -28px rgba(18, 58, 92, 0.42);
   }
 
-  .difference-card-featured:hover,
+.difference-card-featured:hover,
   .difference-card-featured:focus-within {
     transform: translateY(-5px) scale(1.02);
     border-color: var(--color-green);
     box-shadow: 0 30px 60px -28px rgba(18, 58, 92, 0.62);
+  }
+
+  .service-card:hover,
+  .service-card:focus-within {
+    transform: translateY(-4px);
+    border-color: rgba(41, 171, 226, 0.42);
+    box-shadow: 0 26px 54px -28px rgba(7, 35, 58, 0.58);
+  }
+
+  .service-card-featured:hover,
+  .service-card-featured:focus-within {
+    transform: translateY(-5px);
+    border-color: var(--color-green);
+    box-shadow: 0 32px 64px -26px rgba(7, 35, 58, 0.72);
   }
 }
 
@@ -248,6 +266,9 @@ section[id] {
     transition: none;
   }
   .difference-card {
+    transition: none;
+  }
+  .service-card {
     transition: none;
   }
   .hero-clean {

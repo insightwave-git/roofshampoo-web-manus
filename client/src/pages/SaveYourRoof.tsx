@@ -647,7 +647,7 @@ function Offer() {
   return (
     <section id="services" className="bg-navy py-24 md:py-32">
       <div className="shell">
-        <article className="reveal mx-auto max-w-3xl rounded-2xl border-t-4 border-green bg-white p-8 shadow-[0_28px_60px_-24px_rgba(18,58,92,0.7)] md:p-12">
+        <article className="service-card service-card-featured reveal mx-auto max-w-3xl rounded-2xl border-t-4 border-green bg-white p-8 shadow-[0_28px_60px_-24px_rgba(18,58,92,0.7)] md:p-12">
           <span className="inline-block rounded-full bg-green/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-green">Our core service</span>
           <h3 className="mt-5 text-4xl text-navy md:text-5xl">Roof Shampoo</h3>
           <p className="mt-4 text-lg text-navy/75">A full non-bleach clean, included in every job.</p>
@@ -664,7 +664,7 @@ function Offer() {
           </button>
         </article>
 
-        <div className="reveal mx-auto mt-8 max-w-3xl rounded-xl border border-white/15 bg-white/[0.06] p-6 backdrop-blur-sm" data-reveal-delay={140}>
+        <div className="service-card reveal mx-auto mt-8 max-w-3xl rounded-xl border border-white/15 bg-white/[0.06] p-6 backdrop-blur-sm" data-reveal-delay={140}>
           <p className="font-display text-xs font-extrabold uppercase tracking-[0.15em] text-cyan">Ask about the add-on</p>
           <p className="mt-2 text-[#D7E2EC]">
             <strong className="text-white">Restore</strong> is an optional plant-based treatment that resoaks the shingle in the oils sun and weather dry out,

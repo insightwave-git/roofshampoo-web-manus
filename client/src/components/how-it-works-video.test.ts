@@ -39,4 +39,14 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain(".difference-card-featured:hover");
     expect(styles).toContain(".difference-card {\n    transition: none;");
   });
+
+  it("adds matching service-card interaction with a reduced-motion fallback", () => {
+    expect(landingPage).toContain("service-card service-card-featured");
+    expect(landingPage).toContain('className="service-card reveal');
+    expect(styles).toContain(".service-card {\n  transition:");
+    expect(styles).toContain(".service-card:hover");
+    expect(styles).toContain(".service-card:focus-within");
+    expect(styles).toContain(".service-card-featured:hover");
+    expect(styles).toContain(".service-card {\n    transition: none;");
+  });
 });
