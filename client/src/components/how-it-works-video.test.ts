@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const component = readFileSync(resolve(process.cwd(), "client/src/components/HowItWorksExplainer.tsx"), "utf8");
+const landingPage = readFileSync(resolve(process.cwd(), "client/src/pages/SaveYourRoof.tsx"), "utf8");
 const styles = readFileSync(resolve(process.cwd(), "client/src/styles.css"), "utf8");
 
 describe("How It Works supplied video player", () => {
@@ -28,5 +29,14 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain(".how-video-stage{position:relative;aspect-ratio:16/9;overflow:hidden");
     expect(styles).toContain(".how-video-media{display:block;width:100%;height:auto;aspect-ratio:16/9");
     expect(styles).not.toContain("min-height:460px");
+  });
+
+  it("adds subtle comparison-card interaction with a reduced-motion fallback", () => {
+    expect(landingPage).toContain("difference-card");
+    expect(landingPage).toContain("difference-card-featured");
+    expect(styles).toContain(".difference-card:hover");
+    expect(styles).toContain(".difference-card:focus-within");
+    expect(styles).toContain(".difference-card-featured:hover");
+    expect(styles).toContain(".difference-card {\n    transition: none;");
   });
 });

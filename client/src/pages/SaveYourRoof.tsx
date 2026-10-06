@@ -474,9 +474,9 @@ function Difference() {
           {METHODS.map((m, i) => (
             <article
               key={m.name}
-              className={`reveal rounded-2xl p-8 ${
+              className={`difference-card reveal rounded-2xl p-8 ${
                 m.good
-                  ? "border-t-4 border-green bg-offwhite shadow-[0_28px_60px_-28px_rgba(18,58,92,0.6)] lg:z-10 lg:-mt-4 lg:scale-[1.02]"
+                  ? "difference-card-featured border-t-4 border-green bg-offwhite shadow-[0_28px_60px_-28px_rgba(18,58,92,0.6)] lg:z-10 lg:-mt-4 lg:scale-[1.02]"
                   : "border-t-4 border-navy/15 bg-white ring-1 ring-navy/10"
               }`}
               data-reveal-delay={i * 120}
