@@ -714,17 +714,47 @@ function Guarantee() {
 /* ------------------------------------------------------------------ */
 
 function QuoteForm() {
+  type QuoteField = "name" | "phone" | "email" | "address" | "details";
+  const quoteFields: QuoteField[] = ["name", "phone", "email", "address", "details"];
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [detailsLength, setDetailsLength] = useState(0);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<QuoteField, string>>>({});
+
+  const clearFieldError = (field: QuoteField) => {
+    setFieldErrors((current) => {
+      if (!current[field]) return current;
+      const next = { ...current };
+      delete next[field];
+      return next;
+    });
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (submitting) return;
     const form = e.currentTarget;
     if (!form.checkValidity()) {
-      form.reportValidity();
+      const nextErrors: Partial<Record<QuoteField, string>> = {};
+      quoteFields.forEach((field) => {
+        const input = form.elements.namedItem(field) as HTMLInputElement | HTMLTextAreaElement | null;
+        if (!input || input.validity.valid) return;
+        if (input.validity.valueMissing) {
+          nextErrors[field] = "This field is required.";
+        } else if (input.validity.typeMismatch) {
+          nextErrors[field] = "Enter a valid email address.";
+        } else if (input.validity.tooLong) {
+          nextErrors[field] = "Keep this response to 300 characters or fewer.";
+        } else {
+          nextErrors[field] = "Please check this field and try again.";
+        }
+      });
+      setFieldErrors(nextErrors);
+      const firstInvalid = quoteFields.find((field) => nextErrors[field]);
+      if (firstInvalid) {
+        (form.elements.namedItem(firstInvalid) as HTMLInputElement | HTMLTextAreaElement | null)?.focus();
+      }
       return;
     }
     if ((new FormData(form).get("company") as string)?.length) return; // honeypot
@@ -762,19 +792,23 @@ function QuoteForm() {
       <div className="space-y-5">
         <div>
           <label className={label} htmlFor="name">Full Name</label>
-          <input id="name" name="name" required autoComplete="name" className={field} />
+          <input id="name" name="name" required autoComplete="name" className={`${field} ${fieldErrors.name ? "quote-field-invalid" : ""}`} aria-invalid={Boolean(fieldErrors.name)} aria-describedby={fieldErrors.name ? "name-error" : undefined} onChange={() => clearFieldError("name")} />
+          {fieldErrors.name && <p id="name-error" className="quote-field-error">{fieldErrors.name}</p>}
         </div>
         <div>
           <label className={label} htmlFor="phone">Phone Number</label>
-          <input id="phone" name="phone" type="tel" required autoComplete="tel" className={field} />
+          <input id="phone" name="phone" type="tel" required autoComplete="tel" className={`${field} ${fieldErrors.phone ? "quote-field-invalid" : ""}`} aria-invalid={Boolean(fieldErrors.phone)} aria-describedby={fieldErrors.phone ? "phone-error" : undefined} onChange={() => clearFieldError("phone")} />
+          {fieldErrors.phone && <p id="phone-error" className="quote-field-error">{fieldErrors.phone}</p>}
         </div>
         <div>
           <label className={label} htmlFor="email">Email Address</label>
-          <input id="email" name="email" type="email" required autoComplete="email" className={field} />
+          <input id="email" name="email" type="email" required autoComplete="email" className={`${field} ${fieldErrors.email ? "quote-field-invalid" : ""}`} aria-invalid={Boolean(fieldErrors.email)} aria-describedby={fieldErrors.email ? "email-error" : undefined} onChange={() => clearFieldError("email")} />
+          {fieldErrors.email && <p id="email-error" className="quote-field-error">{fieldErrors.email}</p>}
         </div>
         <div>
           <label className={label} htmlFor="address">Property Address</label>
-          <input id="address" name="address" required autoComplete="street-address" className={field} />
+          <input id="address" name="address" required autoComplete="street-address" className={`${field} ${fieldErrors.address ? "quote-field-invalid" : ""}`} aria-invalid={Boolean(fieldErrors.address)} aria-describedby={fieldErrors.address ? "address-error" : undefined} onChange={() => clearFieldError("address")} />
+          {fieldErrors.address && <p id="address-error" className="quote-field-error">{fieldErrors.address}</p>}
         </div>
         <div>
           <label className={label} htmlFor="details">What's going on with your roof?</label>
@@ -784,15 +818,20 @@ function QuoteForm() {
             rows={4}
             required
             maxLength={300}
-            onChange={(event) => setDetailsLength(event.currentTarget.value.length)}
-            aria-describedby="details-help details-count"
+            onChange={(event) => {
+              setDetailsLength(event.currentTarget.value.length);
+              clearFieldError("details");
+            }}
+            aria-invalid={Boolean(fieldErrors.details)}
+            aria-describedby={`details-help details-count${fieldErrors.details ? " details-error" : ""}`}
             placeholder="Black streaks, moss, general cleaning, or whatever you've noticed"
-            className={field}
+            className={`${field} ${fieldErrors.details ? "quote-field-invalid" : ""}`}
           />
           <div className="quote-details-meta mt-2">
             <span id="details-help">Please tell us what you have noticed about your roof.</span>
             <span id="details-count" aria-live="polite">{detailsLength}/300</span>
           </div>
+          {fieldErrors.details && <p id="details-error" className="quote-field-error">{fieldErrors.details}</p>}
         </div>
 
         <div className="sr-only" aria-hidden="true">

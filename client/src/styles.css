@@ -155,6 +155,19 @@ section[id] {
   color: #8e4935;
 }
 
+.quote-field-invalid {
+  border-color: var(--color-clay) !important;
+  box-shadow: 0 0 0 3px rgba(181, 101, 74, 0.14);
+}
+
+.quote-field-error {
+  margin-top: 0.35rem;
+  color: #8e4935;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
 @keyframes quote-submit-spin {
   to {
     transform: rotate(360deg);

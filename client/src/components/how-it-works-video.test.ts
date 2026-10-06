@@ -95,4 +95,15 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain(".quote-details-meta");
     expect(styles).toContain(".quote-form-error");
   });
+
+  it("adds field-level validation messages and invalid styling", () => {
+    expect(landingPage).toContain("const quoteFields: QuoteField[]");
+    expect(landingPage).toContain("input.validity.valueMissing");
+    expect(landingPage).toContain("input.validity.typeMismatch");
+    expect(landingPage).toContain("quote-field-invalid");
+    expect(landingPage).toContain("aria-invalid={Boolean(fieldErrors.name)}");
+    expect(landingPage).toContain("firstInvalid");
+    expect(styles).toContain(".quote-field-invalid");
+    expect(styles).toContain(".quote-field-error");
+  });
 });
