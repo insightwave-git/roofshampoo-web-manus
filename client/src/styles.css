@@ -106,6 +106,29 @@ section[id] {
   box-shadow: 0 8px 16px -12px rgba(58, 181, 74, 0.8);
 }
 
+.btn-green:disabled,
+.btn-green[aria-busy="true"] {
+  cursor: wait;
+  filter: saturate(0.82);
+  opacity: 0.88;
+}
+
+.quote-submit-spinner {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  border: 2px solid rgba(255, 255, 255, 0.42);
+  border-top-color: #fff;
+  border-radius: 999px;
+  animation: quote-submit-spin 700ms linear infinite;
+}
+
+@keyframes quote-submit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ---- scroll reveal ---- */
 
 .reveal {
@@ -325,6 +348,9 @@ section[id] {
   .btn-green:active {
     transform: none;
     filter: none;
+  }
+  .quote-submit-spinner {
+    animation: none;
   }
   .lifespan-card,
   .safety-card-icon,

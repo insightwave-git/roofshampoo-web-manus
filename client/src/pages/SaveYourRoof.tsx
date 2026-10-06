@@ -715,9 +715,11 @@ function Guarantee() {
 
 function QuoteForm() {
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (submitting) return;
     const form = e.currentTarget;
     if (!form.checkValidity()) {
       form.reportValidity();
@@ -725,7 +727,11 @@ function QuoteForm() {
     }
     if ((new FormData(form).get("company") as string)?.length) return; // honeypot
     // TODO: POST to your webhook / CRM endpoint here.
-    setSent(true);
+    setSubmitting(true);
+    window.setTimeout(() => {
+      setSubmitting(false);
+      setSent(true);
+    }, 600);
   };
 
   if (sent) {
@@ -773,7 +779,21 @@ function QuoteForm() {
           <input id="company" name="company" tabIndex={-1} autoComplete="off" />
         </div>
 
-        <button type="submit" className="btn-green w-full py-4 text-base tracking-wide">GET MY FREE QUOTE</button>
+        <button
+          type="submit"
+          className="btn-green quote-submit-button w-full py-4 text-base tracking-wide"
+          disabled={submitting}
+          aria-busy={submitting}
+        >
+          {submitting ? (
+            <>
+              <span className="quote-submit-spinner" aria-hidden="true" />
+              Submitting...
+            </>
+          ) : (
+            "GET MY FREE QUOTE"
+          )}
+        </button>
         <p className="text-center text-sm text-navy/55">We'll never share your details.</p>
       </div>
     </form>

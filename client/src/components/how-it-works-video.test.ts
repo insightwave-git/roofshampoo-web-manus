@@ -72,4 +72,15 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain("scale(0.97)");
     expect(styles).toContain(".btn-green {\n    transition: none;");
   });
+
+  it("adds an accessible quote submission loading state", () => {
+    expect(landingPage).toContain("const [submitting, setSubmitting] = useState(false);");
+    expect(landingPage).toContain("if (submitting) return;");
+    expect(landingPage).toContain("quote-submit-spinner");
+    expect(landingPage).toContain('aria-busy={submitting}');
+    expect(landingPage).toContain('disabled={submitting}');
+    expect(styles).toContain(".quote-submit-spinner");
+    expect(styles).toContain("@keyframes quote-submit-spin");
+    expect(styles).toContain(".btn-green:disabled");
+  });
 });
