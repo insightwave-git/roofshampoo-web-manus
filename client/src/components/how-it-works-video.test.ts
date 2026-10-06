@@ -83,4 +83,16 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain("@keyframes quote-submit-spin");
     expect(styles).toContain(".btn-green:disabled");
   });
+
+  it("requires and limits the roof description with a clear submission error state", () => {
+    expect(landingPage).toContain('id="details"');
+    expect(landingPage).toContain("required");
+    expect(landingPage).toContain("maxLength={300}");
+    expect(landingPage).toContain("detailsLength");
+    expect(landingPage).toContain('role="alert"');
+    expect(landingPage).toContain("We couldn't send your request.");
+    expect(landingPage).toContain("call 724 201 6907");
+    expect(styles).toContain(".quote-details-meta");
+    expect(styles).toContain(".quote-form-error");
+  });
 });

@@ -716,8 +716,10 @@ function Guarantee() {
 function QuoteForm() {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [detailsLength, setDetailsLength] = useState(0);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (submitting) return;
     const form = e.currentTarget;
@@ -727,11 +729,16 @@ function QuoteForm() {
     }
     if ((new FormData(form).get("company") as string)?.length) return; // honeypot
     // TODO: POST to your webhook / CRM endpoint here.
+    setSubmitError("");
     setSubmitting(true);
-    window.setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 600));
       setSent(true);
-    }, 600);
+    } catch {
+      setSubmitError("Please check your connection and try again. If the problem continues, call 724 201 6907.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (sent) {
@@ -771,13 +778,34 @@ function QuoteForm() {
         </div>
         <div>
           <label className={label} htmlFor="details">What's going on with your roof?</label>
-          <textarea id="details" name="details" rows={4} placeholder="Black streaks, moss, general cleaning, or whatever you've noticed" className={field} />
+          <textarea
+            id="details"
+            name="details"
+            rows={4}
+            required
+            maxLength={300}
+            onChange={(event) => setDetailsLength(event.currentTarget.value.length)}
+            aria-describedby="details-help details-count"
+            placeholder="Black streaks, moss, general cleaning, or whatever you've noticed"
+            className={field}
+          />
+          <div className="quote-details-meta mt-2">
+            <span id="details-help">Please tell us what you have noticed about your roof.</span>
+            <span id="details-count" aria-live="polite">{detailsLength}/300</span>
+          </div>
         </div>
 
         <div className="sr-only" aria-hidden="true">
           <label htmlFor="company">Company</label>
           <input id="company" name="company" tabIndex={-1} autoComplete="off" />
         </div>
+
+        {submitError && (
+          <div className="quote-form-error" role="alert">
+            <strong>We couldn't send your request.</strong>
+            <span>{submitError}</span>
+          </div>
+        )}
 
         <button
           type="submit"
