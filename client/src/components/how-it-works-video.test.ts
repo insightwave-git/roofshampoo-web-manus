@@ -63,4 +63,13 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain(".safety-card:focus-within .safety-card-icon");
     expect(styles).toContain(".lifespan-card,\n  .safety-card-icon,\n  .restore-learn-more {\n    transition: none;");
   });
+
+  it("enhances primary CTA hover, focus, press, and reduced-motion feedback", () => {
+    expect(styles).toContain(".btn-green:hover");
+    expect(styles).toContain("scale(1.015)");
+    expect(styles).toContain(".btn-green:focus-visible");
+    expect(styles).toContain(".btn-green:active");
+    expect(styles).toContain("scale(0.97)");
+    expect(styles).toContain(".btn-green {\n    transition: none;");
+  });
 });
