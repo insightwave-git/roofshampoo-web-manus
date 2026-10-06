@@ -49,4 +49,18 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain(".service-card-featured:hover");
     expect(styles).toContain(".service-card {\n    transition: none;");
   });
+
+  it("adds the approved supporting card interactions and Restore details control", () => {
+    expect(landingPage).toContain("restore-learn-more");
+    expect(landingPage).toContain("Learn more");
+    expect(landingPage).toContain("Restore is an optional plant-based oil treatment");
+    expect(landingPage).toContain("lifespan-card");
+    expect(landingPage).toContain("safety-card");
+    expect(landingPage).toContain("safety-card-icon");
+    expect(styles).toContain(".lifespan-card:hover");
+    expect(styles).toContain(".lifespan-card:focus-within");
+    expect(styles).toContain(".safety-card:hover .safety-card-icon");
+    expect(styles).toContain(".safety-card:focus-within .safety-card-icon");
+    expect(styles).toContain(".lifespan-card,\n  .safety-card-icon,\n  .restore-learn-more {\n    transition: none;");
+  });
 });

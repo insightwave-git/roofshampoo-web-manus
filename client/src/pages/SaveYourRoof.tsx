@@ -573,8 +573,8 @@ function Safety() {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SAFETY.map((s, i) => (
-            <article key={s.t} className="reveal rounded-2xl bg-white p-7" data-reveal-delay={i * 90}>
-              <svg viewBox="0 0 24 24" className="h-9 w-9 text-green" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+            <article key={s.t} className="safety-card reveal rounded-2xl bg-white p-7" data-reveal-delay={i * 90}>
+              <svg viewBox="0 0 24 24" className="safety-card-icon h-9 w-9 text-green" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                 <path d={s.icon} strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               <h3 className="mt-5 text-lg text-navy">{s.t}</h3>
@@ -600,7 +600,7 @@ function Lifespan() {
         <p className="mt-3 text-navy/55">Based on a 20-year rated shingle</p>
 
         <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <figure className="reveal overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-navy/10">
+          <figure className="lifespan-card reveal overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-navy/10">
             <div className="relative aspect-[4/3] w-full overflow-hidden">
               <img src={IMG.roofNeglected} alt="Roof covered in moss and black algae streaks" loading="lazy" className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-navy/80 to-transparent p-5 pb-10">
@@ -612,7 +612,7 @@ function Lifespan() {
             </figcaption>
           </figure>
 
-          <figure className="reveal overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-navy/10" data-reveal-delay={120}>
+          <figure className="lifespan-card reveal overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-navy/10" data-reveal-delay={120}>
             <div className="relative aspect-[4/3] w-full overflow-hidden">
               <img src={IMG.roofMaintained} alt="Professionally cleaned roof in like-new condition" loading="lazy" className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-navy/80 to-transparent p-5 pb-10">
@@ -644,6 +644,8 @@ const CLEAN = [
 ];
 
 function Offer() {
+  const [showRestoreDetails, setShowRestoreDetails] = useState(false);
+
   return (
     <section id="services" className="bg-navy py-24 md:py-32">
       <div className="shell">
@@ -670,6 +672,19 @@ function Offer() {
             <strong className="text-white">Restore</strong> is an optional plant-based treatment that resoaks the shingle in the oils sun and weather dry out,
             rebuilding flexibility and sealing the surface so your clean lasts longer. Worth asking your technician about while we're on site.
           </p>
+          <button
+            type="button"
+            className="restore-learn-more mt-4"
+            aria-expanded={showRestoreDetails}
+            onClick={() => setShowRestoreDetails((visible) => !visible)}
+          >
+            {showRestoreDetails ? "Hide details" : "Learn more"}
+          </button>
+          {showRestoreDetails && (
+            <p className="restore-details mt-3 text-sm text-[#D7E2EC]">
+              Restore is an optional plant-based oil treatment that helps recondition shingles, improve flexibility, and extend the life of a clean roof.
+            </p>
+          )}
         </div>
       </div>
     </section>
