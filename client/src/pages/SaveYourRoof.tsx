@@ -345,7 +345,7 @@ function Hero({ onIntroChange }: { onIntroChange: (done: boolean) => void }) {
 const WHY = [
   { t: "No bleach. Ever.", d: "Chlorine strips shingles and kills what it runs off onto. We don't use it." },
   { t: "No pressure damage.", d: "A soft, low-pressure wash. No blasting granules off a roof you're trying to save." },
-  { t: "Clean the same day.", d: "Streaks, moss, algae and lichen gone — and your roof looks the way it should." },
+  { t: "Clean the same day.", d: "Streaks, moss, algae and lichen gone. Your roof looks the way it should." },
 ];
 
 function WhyBand() {
@@ -393,7 +393,7 @@ function Problem() {
         <p className="eyebrow">THE PROBLEM</p>
         <h2 className="mt-4 max-w-3xl text-4xl text-white md:text-5xl">EVERY ROOF TELLS TWO STORIES.</h2>
         <p className="mt-6 max-w-2xl text-[#B9CBDB]">
-          One where dirt, moss, and algae quietly cut its life short. One where it's cleaned properly — and lives out every year it was built for.
+          One where dirt, moss, and algae quietly cut its life short. One where it's cleaned properly and lives out every year it was built for.
         </p>
 
         <ul className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
@@ -411,7 +411,7 @@ function Problem() {
         </ul>
 
         <p className="mx-auto mt-14 max-w-[800px] text-center text-[#B9CBDB]">
-          Left alone, these accelerate granule loss, UV degradation, and shingle curling &amp; cracking — cutting years off a roof that should have lasted
+          Left alone, these accelerate granule loss, UV degradation, and shingle curling and cracking, cutting years off a roof that should have lasted
           decades.
         </p>
       </div>
@@ -430,7 +430,7 @@ const METHODS = [
     good: false,
     points: [
       "High-pressure water blasts granules off the shingle surface",
-      "Granules are the roof's UV protection — losing them shortens its life",
+      "Granules are the roof's UV protection. Losing them shortens its life",
       "Can void a manufacturer's shingle warranty",
       "Forces water under shingles and into the roof deck",
     ],
@@ -440,7 +440,7 @@ const METHODS = [
     tag: "What we do",
     good: true,
     points: [
-      "Low-pressure application — nothing is blasted, scrubbed or stripped",
+      "Low-pressure application. Nothing is blasted, scrubbed, or stripped",
       "No bleach, no phosphates, no harsh chemicals of any kind",
       "Breaks down organic growth, then breaks down itself",
       "Safe for pets, plants, people and the shingles underneath",
@@ -466,7 +466,7 @@ function Difference() {
         <p className="eyebrow">THE DIFFERENCE</p>
         <h2 className="mt-4 max-w-4xl text-4xl text-navy md:text-5xl">THERE ARE THREE WAYS TO CLEAN A ROOF. ONLY ONE OF THEM SAVES IT.</h2>
         <p className="mt-6 max-w-[820px] text-navy/80">
-          Most roof cleaning either damages the shingle or damages everything around it. Roof Shampoo was built to do neither — tough on algae, moss and lichen,
+          Most roof cleaning either damages the shingle or damages everything around it. Roof Shampoo was built to do neither. It is tough on algae, moss, and lichen,
           and nothing else.
         </p>
 
@@ -515,8 +515,8 @@ function Difference() {
 const STEPS = [
   { n: "01", t: "APPLY", d: "Eco-friendly cleaning solution applied at low pressure, safe for shingles and everything below the roofline." },
   { n: "02", t: "BREAK DOWN", d: "Solution lifts streaks, moss, algae, and lichen without scrubbing or damaging the shingle surface." },
-  { n: "03", t: "RINSE", d: "Gentle rinse clears residue — no pressure-washer damage, no runoff left behind." },
-  { n: "04", t: "RESTORE — THE ADD-ON", d: "An optional plant-based oil treatment resoaks the shingle, rebuilding flexibility and sealing out water." },
+  { n: "03", t: "RINSE", d: "Gentle rinse clears residue without pressure-washer damage or runoff." },
+  { n: "04", t: "RESTORE: THE ADD-ON", d: "An optional plant-based oil treatment resoaks the shingle, rebuilding flexibility and sealing out water." },
 ];
 
 function HowItWorks() {
@@ -528,11 +528,11 @@ function HowItWorks() {
           <h2 className="mx-auto mt-4 max-w-[900px] text-4xl text-navy md:text-5xl">GENTLE ON YOUR ROOF. SAFE FOR EVERYTHING AROUND IT.</h2>
           <div className="mx-auto mt-7 max-w-[820px] space-y-5 text-navy/80">
             <p>
-              Our wash is a soft, low-pressure application — no scrubbing, no brushing, no harsh chemicals that strip your shingles or run off into your yard.
+              Our wash is a soft, low-pressure application with no scrubbing, brushing, or harsh chemicals that strip your shingles or run off into your yard.
               It's built to be tough on algae, moss, and lichen, and nothing else.
             </p>
             <p>
-              No bleach. No phosphates. Once it's done its job breaking down organic growth, the solution breaks down itself — it doesn't linger in your gutters,
+              No bleach. No phosphates. Once it's done its job breaking down organic growth, the solution breaks down itself, so it does not linger in your gutters,
               your soil, or your grass.
             </p>
           </div>
@@ -558,7 +558,7 @@ const SAFETY = [
   { t: "PEOPLE SAFE", d: "No harsh fumes, no toxic residue on siding, walkways, or anywhere near the people living in the house.", icon: "M12 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm-6 13c0-3.5 2.7-6 6-6s6 2.5 6 6" },
   {
     t: "SHINGLE SAFE",
-    d: "Low pressure and no scrubbing means no granule loss from the cleaning itself — only from what it removes.",
+    d: "Low pressure and no scrubbing means no granule loss from the cleaning itself. Granule loss comes only from what it removes.",
     icon: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3Z",
   },
 ];
@@ -604,7 +604,7 @@ function Lifespan() {
             <div className="relative aspect-[4/3] w-full overflow-hidden">
               <img src={IMG.roofNeglected} alt="Roof covered in moss and black algae streaks" loading="lazy" className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-navy/80 to-transparent p-5 pb-10">
-                <p className="font-display text-lg font-extrabold text-white md:text-xl">Neglected — moss &amp; black streaks left untreated</p>
+                <p className="font-display text-lg font-extrabold text-white md:text-xl">Neglected: moss and black streaks left untreated</p>
               </div>
             </div>
             <figcaption className="border-t-4 border-clay bg-navy p-5 text-center">
@@ -616,7 +616,7 @@ function Lifespan() {
             <div className="relative aspect-[4/3] w-full overflow-hidden">
               <img src={IMG.roofMaintained} alt="Professionally cleaned roof in like-new condition" loading="lazy" className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-navy/80 to-transparent p-5 pb-10">
-                <p className="font-display text-lg font-extrabold text-white md:text-xl">Cleaned properly — full rated life reached</p>
+                <p className="font-display text-lg font-extrabold text-white md:text-xl">Cleaned properly: full rated life reached</p>
               </div>
             </div>
             <figcaption className="border-t-4 border-green bg-navy p-5 text-center">
@@ -667,7 +667,7 @@ function Offer() {
         <div className="reveal mx-auto mt-8 max-w-3xl rounded-xl border border-white/15 bg-white/[0.06] p-6 backdrop-blur-sm" data-reveal-delay={140}>
           <p className="font-display text-xs font-extrabold uppercase tracking-[0.15em] text-cyan">Ask about the add-on</p>
           <p className="mt-2 text-[#D7E2EC]">
-            <strong className="text-white">Restore</strong> — an optional plant-based treatment that resoaks the shingle in the oils sun and weather dry out,
+            <strong className="text-white">Restore</strong> is an optional plant-based treatment that resoaks the shingle in the oils sun and weather dry out,
             rebuilding flexibility and sealing the surface so your clean lasts longer. Worth asking your technician about while we're on site.
           </p>
         </div>
@@ -720,7 +720,7 @@ function QuoteForm() {
           <circle cx="12" cy="12" r="10" strokeWidth="1.5" />
           <path d="m7 12.5 3.2 3.2L17 9" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <h3 className="mt-6 text-2xl text-navy">Thanks — we've got it.</h3>
+        <h3 className="mt-6 text-2xl text-navy">Thanks. We've got it.</h3>
         <p className="mt-3 text-navy/75">We'll be in touch within one business day with your free quote.</p>
       </div>
     );
@@ -750,7 +750,7 @@ function QuoteForm() {
         </div>
         <div>
           <label className={label} htmlFor="details">What's going on with your roof?</label>
-          <textarea id="details" name="details" rows={4} placeholder="Black streaks, moss, general cleaning — whatever you've noticed" className={field} />
+          <textarea id="details" name="details" rows={4} placeholder="Black streaks, moss, general cleaning, or whatever you've noticed" className={field} />
         </div>
 
         <div className="sr-only" aria-hidden="true">
