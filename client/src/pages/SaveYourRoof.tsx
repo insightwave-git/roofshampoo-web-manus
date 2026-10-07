@@ -744,6 +744,8 @@ function QuoteForm() {
           nextErrors[field] = "This field is required.";
         } else if (input.validity.typeMismatch) {
           nextErrors[field] = "Enter a valid email address.";
+        } else if (field === "phone" && input.validity.patternMismatch) {
+          nextErrors[field] = "Enter a valid phone number with at least 10 digits.";
         } else if (input.validity.tooLong) {
           nextErrors[field] = "Keep this response to 300 characters or fewer.";
         } else {
@@ -797,7 +799,7 @@ function QuoteForm() {
         </div>
         <div>
           <label className={label} htmlFor="phone">Phone Number</label>
-          <input id="phone" name="phone" type="tel" required autoComplete="tel" className={`${field} ${fieldErrors.phone ? "quote-field-invalid" : ""}`} aria-invalid={Boolean(fieldErrors.phone)} aria-describedby={fieldErrors.phone ? "phone-error" : undefined} onChange={() => clearFieldError("phone")} />
+          <input id="phone" name="phone" type="tel" required inputMode="tel" autoComplete="tel" pattern="(?=(?:.*[0-9]){10,})[0-9 ()+.-]+" title="Enter a phone number with at least 10 digits" className={`${field} ${fieldErrors.phone ? "quote-field-invalid" : ""}`} aria-invalid={Boolean(fieldErrors.phone)} aria-describedby={fieldErrors.phone ? "phone-error" : undefined} onChange={() => clearFieldError("phone")} />
           {fieldErrors.phone && <p id="phone-error" className="quote-field-error">{fieldErrors.phone}</p>}
         </div>
         <div>

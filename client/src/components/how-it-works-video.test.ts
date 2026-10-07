@@ -106,4 +106,12 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain(".quote-field-invalid");
     expect(styles).toContain(".quote-field-error");
   });
+
+  it("validates phone numbers with at least 10 digits", () => {
+    expect(landingPage).toContain('type="tel"');
+    expect(landingPage).toContain('inputMode="tel"');
+    expect(landingPage).toContain('pattern="(?=(?:.*[0-9]){10,})[0-9 ()+.-]+"');
+    expect(landingPage).toContain("input.validity.patternMismatch");
+    expect(landingPage).toContain("Enter a valid phone number with at least 10 digits.");
+  });
 });
