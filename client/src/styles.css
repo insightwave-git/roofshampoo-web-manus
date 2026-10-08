@@ -485,3 +485,75 @@ section[id] {
     min-height: 0;
   }
 }
+
+/* Chrome-free video affordance: reveal a quiet play or pause cue on hover and focus. */
+.how-video-player-bare {
+  position: relative;
+}
+
+.how-video-play-indicator {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: rgba(6, 36, 59, 0.12);
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 180ms ease, background-color 180ms ease;
+}
+
+.how-video-player-bare:hover .how-video-play-indicator,
+.how-video-play-indicator:focus-visible {
+  opacity: 1;
+  background: rgba(6, 36, 59, 0.2);
+}
+
+.how-video-play-indicator:focus-visible {
+  outline: 3px solid rgba(155, 217, 239, 0.95);
+  outline-offset: -6px;
+}
+
+.how-video-play-indicator:active .how-video-play-icon {
+  transform: scale(0.92);
+}
+
+.how-video-play-icon {
+  display: block;
+  width: clamp(3rem, 5vw, 4.5rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(12, 54, 88, 0.78);
+  box-shadow: 0 10px 28px rgba(6, 36, 59, 0.28);
+  position: relative;
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.how-video-play-icon::after {
+  content: "";
+  position: absolute;
+  left: 53%;
+  top: 50%;
+  transform: translate(-35%, -50%);
+  border-top: 0.6rem solid transparent;
+  border-bottom: 0.6rem solid transparent;
+  border-left: 0.9rem solid #fff;
+}
+
+.how-video-play-icon.is-pause::after {
+  left: 50%;
+  width: 0.8rem;
+  height: 1.15rem;
+  transform: translate(-50%, -50%);
+  border: 0;
+  background: linear-gradient(90deg, #fff 0 35%, transparent 35% 65%, #fff 65% 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .how-video-play-indicator,
+  .how-video-play-icon {
+    transition: none;
+  }
+}

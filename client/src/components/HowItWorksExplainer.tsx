@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const VIDEO_URL = "/manus-storage/RoofShampoo_femaleversion2_6651c096.mp4";
 
@@ -6,6 +6,7 @@ export default function HowItWorksExplainer() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const soundUnlockedRef = useRef(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const root = sectionRef.current;
@@ -16,6 +17,7 @@ export default function HowItWorksExplainer() {
       video.pause();
       video.currentTime = 0;
       video.muted = !soundUnlockedRef.current;
+      setIsPlaying(false);
     };
 
     const observer = new IntersectionObserver(
@@ -59,6 +61,16 @@ export default function HowItWorksExplainer() {
     };
   }, []);
 
+  const togglePlayback = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      void video.play().catch(() => undefined);
+    } else {
+      video.pause();
+    }
+  };
+
   return (
     <div ref={sectionRef} className="how-video-player how-video-player-bare" aria-label="SaveYourRoof four-step roof cleaning explainer">
       <video
@@ -68,13 +80,24 @@ export default function HowItWorksExplainer() {
         playsInline
         muted
         preload="metadata"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
         onEnded={() => {
           if (videoRef.current) videoRef.current.currentTime = 0;
+          setIsPlaying(false);
         }}
         aria-label="SaveYourRoof roof cleaning explainer video with embedded captions"
       >
         Your browser does not support embedded video.
       </video>
+      <button
+        type="button"
+        className="how-video-play-indicator"
+        onClick={togglePlayback}
+        aria-label={isPlaying ? "Pause roof cleaning explainer" : "Play roof cleaning explainer"}
+      >
+        <span className={`how-video-play-icon ${isPlaying ? "is-pause" : ""}`} aria-hidden="true" />
+      </button>
     </div>
   );
 }

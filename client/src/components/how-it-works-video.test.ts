@@ -30,6 +30,16 @@ describe("How It Works supplied video player", () => {
     expect(component).not.toContain("how-video-quote-button");
   });
 
+  it("adds a subtle accessible hover play indicator", () => {
+    expect(component).toContain("const [isPlaying, setIsPlaying] = useState(false);");
+    expect(component).toContain("how-video-play-indicator");
+    expect(component).toContain("togglePlayback");
+    expect(component).toContain("aria-label={isPlaying ? \"Pause roof cleaning explainer\" : \"Play roof cleaning explainer\"}");
+    expect(styles).toContain(".how-video-player-bare:hover .how-video-play-indicator");
+    expect(styles).toContain(".how-video-play-indicator:focus-visible");
+    expect(styles).toContain(".how-video-play-icon.is-pause");
+  });
+
   it("keeps the media at the compact native 16:9 presentation", () => {
     expect(styles).toContain(".how-video-stage{position:relative;aspect-ratio:16/9;overflow:hidden");
     expect(styles).toContain(".how-video-player{width:min(100%,820px);margin:3.5rem auto 0");
