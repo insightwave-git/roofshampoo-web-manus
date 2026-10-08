@@ -7,6 +7,7 @@ export default function HowItWorksExplainer() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const soundUnlockedRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   useEffect(() => {
     const root = sectionRef.current;
@@ -18,6 +19,7 @@ export default function HowItWorksExplainer() {
       video.currentTime = 0;
       video.muted = !soundUnlockedRef.current;
       setIsPlaying(false);
+      setIsVideoReady(false);
     };
 
     const observer = new IntersectionObserver(
@@ -75,22 +77,30 @@ export default function HowItWorksExplainer() {
     <div ref={sectionRef} className="how-video-player how-video-player-bare" aria-label="SaveYourRoof four-step roof cleaning explainer">
       <video
         ref={videoRef}
-        className="how-video-media"
+        className={`how-video-media ${isVideoReady ? "is-ready" : ""}`}
         src={VIDEO_URL}
         poster="/manus-storage/frame-25s_2a287165.jpg"
         playsInline
         muted
         preload="metadata"
         onPlay={() => setIsPlaying(true)}
+        onCanPlay={() => setIsVideoReady(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => {
           if (videoRef.current) videoRef.current.currentTime = 0;
           setIsPlaying(false);
+          setIsVideoReady(false);
         }}
         aria-label="SaveYourRoof roof cleaning explainer video with embedded captions"
       >
         Your browser does not support embedded video.
       </video>
+      <img
+        className={`how-video-poster ${isVideoReady ? "is-hidden" : ""}`}
+        src="/manus-storage/frame-25s_2a287165.jpg"
+        alt=""
+        aria-hidden="true"
+      />
       <button
         type="button"
         className="how-video-play-indicator"

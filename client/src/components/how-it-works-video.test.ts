@@ -45,6 +45,17 @@ describe("How It Works supplied video player", () => {
     expect(component).toContain('preload="metadata"');
   });
 
+  it("crossfades from the poster to the ready video", () => {
+    expect(component).toContain("const [isVideoReady, setIsVideoReady] = useState(false);");
+    expect(component).toContain("onCanPlay={() => setIsVideoReady(true)}");
+    expect(component).toContain("how-video-poster");
+    expect(component).toContain("is-hidden");
+    expect(styles).toContain(".how-video-media.is-ready");
+    expect(styles).toContain(".how-video-poster.is-hidden");
+    expect(styles).toContain("transition: opacity 520ms");
+    expect(styles).toContain("@media (prefers-reduced-motion: reduce)");
+  });
+
   it("keeps the media at the compact native 16:9 presentation", () => {
     expect(styles).toContain(".how-video-stage{position:relative;aspect-ratio:16/9;overflow:hidden");
     expect(styles).toContain(".how-video-player{width:min(100%,820px);margin:3.5rem auto 0");
