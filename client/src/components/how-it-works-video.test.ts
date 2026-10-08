@@ -40,6 +40,11 @@ describe("How It Works supplied video player", () => {
     expect(styles).toContain(".how-video-play-icon.is-pause");
   });
 
+  it("uses a high-quality poster frame before playback and while buffering", () => {
+    expect(component).toContain('poster="/manus-storage/frame-25s_2a287165.jpg"');
+    expect(component).toContain('preload="metadata"');
+  });
+
   it("keeps the media at the compact native 16:9 presentation", () => {
     expect(styles).toContain(".how-video-stage{position:relative;aspect-ratio:16/9;overflow:hidden");
     expect(styles).toContain(".how-video-player{width:min(100%,820px);margin:3.5rem auto 0");

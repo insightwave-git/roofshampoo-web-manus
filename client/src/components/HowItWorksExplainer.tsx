@@ -77,6 +77,7 @@ export default function HowItWorksExplainer() {
         ref={videoRef}
         className="how-video-media"
         src={VIDEO_URL}
+        poster="/manus-storage/frame-25s_2a287165.jpg"
         playsInline
         muted
         preload="metadata"
