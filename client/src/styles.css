@@ -281,6 +281,11 @@ section[id] {
   transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 240ms ease, border-color 240ms ease;
 }
 
+.safety-card {
+  border: 1px solid transparent;
+  transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 240ms ease, border-color 240ms ease, background-color 240ms ease;
+}
+
 .lifespan-card {
   transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 240ms ease;
 }
@@ -341,6 +346,14 @@ section[id] {
     box-shadow: 0 24px 48px -24px rgba(18, 58, 92, 0.42);
   }
 
+  .safety-card:hover,
+  .safety-card:focus-within {
+    transform: translateY(-4px);
+    border-color: rgba(41, 171, 226, 0.34);
+    background-color: #fbfeff;
+    box-shadow: 0 24px 48px -26px rgba(18, 58, 92, 0.36);
+  }
+
   .safety-card:hover .safety-card-icon,
   .safety-card:focus-within .safety-card-icon {
     transform: translateY(-2px) scale(1.08);
@@ -398,6 +411,7 @@ section[id] {
     animation: none;
   }
   .lifespan-card,
+  .safety-card,
   .safety-card-icon,
   .restore-learn-more {
     transition: none;
