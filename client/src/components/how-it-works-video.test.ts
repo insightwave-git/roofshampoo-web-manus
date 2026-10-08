@@ -14,21 +14,28 @@ describe("How It Works supplied video player", () => {
     expect(component).toContain("preload=\"metadata\"");
     expect(component).toContain("IntersectionObserver");
     expect(component).toContain("intersectionRatio >= 0.5");
-    expect(component).toContain("Play with sound");
-    expect(component).toContain("GET QUOTE NOW");
+    expect(component).toContain("void video.play().catch");
+    expect(component).toContain("pointerdown");
+    expect(component).toContain("video.muted = false");
+    expect(component).toContain("video.currentTime = 0");
   });
 
-  it("does not render the former illustrated scenes or transcript fallback", () => {
+  it("renders a bare embedded video without the former player chrome", () => {
     expect(component).not.toContain("TRANSCRIPT");
     expect(component).not.toContain("how-video-transcript");
     expect(component).not.toContain("how-video-scene");
     expect(component).not.toContain("gsap");
+    expect(component).not.toContain("how-video-toolbar");
+    expect(component).not.toContain("how-video-scrubber");
+    expect(component).not.toContain("how-video-quote-button");
   });
 
   it("keeps the media at the compact native 16:9 presentation", () => {
     expect(styles).toContain(".how-video-stage{position:relative;aspect-ratio:16/9;overflow:hidden");
     expect(styles).toContain(".how-video-player{width:min(100%,820px);margin:3.5rem auto 0");
     expect(styles).toContain(".how-video-media{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain");
+    expect(styles).toContain(".problem-section,\n.how-it-works-section");
+    expect(styles).toContain(".how-it-works-grid");
     expect(styles).not.toContain("min-height:460px");
   });
 

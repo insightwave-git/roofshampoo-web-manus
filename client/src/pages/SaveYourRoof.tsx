@@ -381,7 +381,7 @@ const PROBLEMS = [
 
 function Problem() {
   return (
-    <section id="problem" className="relative overflow-hidden bg-navy-deep py-24 md:py-32">
+    <section id="problem" className="problem-section relative overflow-hidden bg-navy-deep py-24 md:py-32">
       <img
         src={IMG.shingleTexture}
         alt=""
@@ -521,12 +521,13 @@ const STEPS = [
 
 function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-offwhite py-24 md:py-32">
+    <section id="how-it-works" className="how-it-works-section bg-offwhite py-24 md:py-32">
       <div className="shell">
-        <div className="text-center">
+        <div className="how-it-works-grid">
+          <div className="how-it-works-copy text-center lg:text-left">
           <p className="eyebrow">HOW IT WORKS</p>
-          <h2 className="mx-auto mt-4 max-w-[900px] text-4xl text-navy md:text-5xl">GENTLE ON YOUR ROOF. SAFE FOR EVERYTHING AROUND IT.</h2>
-          <div className="mx-auto mt-7 max-w-[820px] space-y-5 text-navy/80">
+          <h2 className="mx-auto mt-4 max-w-[900px] text-4xl text-navy md:text-5xl lg:mx-0">GENTLE ON YOUR ROOF. SAFE FOR EVERYTHING AROUND IT.</h2>
+          <div className="mx-auto mt-7 max-w-[820px] space-y-5 text-navy/80 lg:mx-0">
             <p>
               Our wash is a soft, low-pressure application with no scrubbing, brushing, or harsh chemicals that strip your shingles or run off into your yard.
               It's built to be tough on algae, moss, and lichen, and nothing else.
@@ -536,9 +537,10 @@ function HowItWorks() {
               your soil, or your grass.
             </p>
           </div>
-        </div>
+          </div>
 
-        <HowItWorksExplainer onQuote={() => scrollToId("quote")} />
+          <HowItWorksExplainer />
+        </div>
       </div>
     </section>
   );
