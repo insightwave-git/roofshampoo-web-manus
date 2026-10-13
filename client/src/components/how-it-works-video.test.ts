@@ -8,7 +8,7 @@ const styles = readFileSync(resolve(process.cwd(), "client/src/styles.css"), "ut
 
 describe("How It Works supplied video player", () => {
   it("uses the approved hosted MP4 and keeps the interactive playback contract", () => {
-    expect(component).toContain("/manus-storage/RoofShampoo_Femaleversion_089d2608.mp4");
+    expect(component).toContain("/assets/RoofShampoo_Femaleversion.mp4");
     expect(component).toContain("playsInline");
     expect(component).toContain("muted");
     expect(component).toContain("preload=\"metadata\"");
@@ -41,7 +41,7 @@ describe("How It Works supplied video player", () => {
   });
 
   it("uses a high-quality poster frame before playback and while buffering", () => {
-    expect(component).toContain('poster="/manus-storage/frame-28s_a21afbf8.jpg"');
+    expect(component).toContain('poster="/assets/frame-28s.jpg"');
     expect(component).toContain('preload="metadata"');
   });
 

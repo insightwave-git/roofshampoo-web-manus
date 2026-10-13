@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const VIDEO_URL = "/manus-storage/RoofShampoo_Femaleversion_089d2608.mp4";
+const VIDEO_URL = "/assets/RoofShampoo_Femaleversion.mp4";
 
 export default function HowItWorksExplainer() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -79,7 +79,7 @@ export default function HowItWorksExplainer() {
         ref={videoRef}
         className={`how-video-media ${isVideoReady ? "is-ready" : ""}`}
         src={VIDEO_URL}
-        poster="/manus-storage/frame-28s_a21afbf8.jpg"
+        poster="/assets/frame-28s.jpg"
         playsInline
         muted
         preload="metadata"
@@ -97,7 +97,7 @@ export default function HowItWorksExplainer() {
       </video>
       <img
         className={`how-video-poster ${isVideoReady ? "is-hidden" : ""}`}
-        src="/manus-storage/frame-28s_a21afbf8.jpg"
+        src="/assets/frame-28s.jpg"
         alt=""
         aria-hidden="true"
       />
