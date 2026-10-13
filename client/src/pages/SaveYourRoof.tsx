@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
 import HowItWorksExplainer from "@/components/HowItWorksExplainer";
 
 /* ========================================================================
@@ -25,6 +25,8 @@ const TEL = "tel:+17242016907";
 const IMG = {
   beforeRoof: "/assets/before-roof.jpg",
   afterRoof: "/assets/after-roof.jpg",
+  /** Hero "before" image: the before-roof photo with moss, algae and streaks intensified, aligned to afterRoof. */
+  dirtyRoof: "/images/hero-dirty-roof.jpg",
   shingleTexture: "/assets/shingle-texture.jpg",
   softWashTech: "/assets/soft-wash-tech.jpg",
   roofNeglected: "/assets/roof-neglected.jpg",
@@ -39,13 +41,6 @@ const IMG = {
   /** Mascot lockup for the hero spin-in. Prefer a PNG with transparency in Manus. */
   mascot: "/assets/SaveYourRoof_Final09Artboard7.png",
 };
-
-const HERO_MS = {
-  dirtyHold: 1200,
-  fade: 1800,
-  cleanHold: 400,
-  logoSpin: 1000,
-} as const;
 
 const NAV = [
   { label: "Why Roof Shampoo", id: "why" },
@@ -207,132 +202,254 @@ function Header({ revealed }: { revealed: boolean }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  1. HERO — dirty roof fades to clean, then Roof Shampoo lockup      */
+/*  1. HERO — "Clean Sweep": dirty roof wipes clean, left to right     */
 /* ------------------------------------------------------------------ */
 
-function Hero({ onIntroChange }: { onIntroChange: (done: boolean) => void }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const timers = useRef<number[]>([]);
-  const inViewRef = useRef(false);
-  const [playId, setPlayId] = useState(0);
-  const [fading, setFading] = useState(false);
-  const [logoIn, setLogoIn] = useState(false);
-  const [ctaIn, setCtaIn] = useState(false);
-  const [skipMotion, setSkipMotion] = useState(false);
+/** Timing for the hero wipe (ms). */
+const HERO_SWEEP = { hold: 1100, sweep: 2800 } as const;
 
-  const clearTimers = () => {
+/** Problem markers on the dirty roof, as % of the photo (x from left, y from top). */
+const HERO_MARKERS = [
+  { label: "Moss", x: 31, y: 33 },
+  { label: "Black streaks", x: 50, y: 27 },
+  { label: "Algae", x: 63, y: 37 },
+] as const;
+
+/** Before/after photos are 3:2. FOCUS_X keeps the roof centred when the photo is cropped. */
+const HERO_PHOTO_RATIO = 3 / 2;
+const HERO_FOCUS_X = 0.42;
+
+function Hero() {
+  const mediaRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const dirtyRef = useRef<HTMLImageElement>(null);
+  const edgeRef = useRef<HTMLDivElement>(null);
+  const beforeRef = useRef<HTMLDivElement>(null);
+  const afterRef = useRef<HTMLDivElement>(null);
+  const markerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const box = useRef({ left: 0, w: 0, vw: 0 });
+  const raf = useRef(0);
+  const timers = useRef<number[]>([]);
+  const started = useRef(false);
+  const [done, setDone] = useState(false);
+
+  /** Size the photo "stage" like object-fit: cover, so markers stay pinned to the roof. */
+  const layout = useCallback(() => {
+    const media = mediaRef.current;
+    const stage = stageRef.current;
+    if (!media || !stage) return;
+    const vw = media.clientWidth;
+    const vh = media.clientHeight;
+    let w = vw;
+    let h = vw / HERO_PHOTO_RATIO;
+    if (h < vh) {
+      h = vh;
+      w = vh * HERO_PHOTO_RATIO;
+    }
+    const left = (vw - w) * HERO_FOCUS_X;
+    const top = (vh - h) * 0.35;
+    Object.assign(stage.style, { width: `${w}px`, height: `${h}px`, left: `${left}px`, top: `${top}px` });
+    box.current = { left, w, vw };
+  }, []);
+
+  /** Move the wipe edge to x px from the left of the visible hero image. */
+  const setWipe = useCallback((x: number) => {
+    const { left, w } = box.current;
+    const pct = Math.min(100, (Math.max(0, x - left) / w) * 100);
+    if (dirtyRef.current) dirtyRef.current.style.clipPath = `inset(0 0 0 ${pct}%)`;
+    if (edgeRef.current) edgeRef.current.style.left = `${x}px`;
+    HERO_MARKERS.forEach((m, i) => {
+      const el = markerRefs.current[i];
+      if (!el) return;
+      const mx = left + w * (m.x / 100);
+      el.classList.toggle("is-gone", x > mx - 10);
+    });
+  }, []);
+
+  const play = useCallback(() => {
+    cancelAnimationFrame(raf.current);
     timers.current.forEach((id) => window.clearTimeout(id));
     timers.current = [];
-  };
+    layout();
+    setDone(false);
 
-  const snapDone = useCallback(() => {
-    clearTimers();
-    setFading(true);
-    setLogoIn(true);
-    setCtaIn(true);
-    onIntroChange(true);
-  }, [onIntroChange]);
+    const before = beforeRef.current;
+    const after = afterRef.current;
+    const edge = edgeRef.current;
+    after?.classList.remove("is-in");
+    edge?.classList.remove("is-on");
+    markerRefs.current.forEach((el) => el?.classList.remove("is-in", "is-gone"));
+    setWipe(0);
+    before?.classList.add("is-in");
+    markerRefs.current.forEach((el, i) => {
+      timers.current.push(window.setTimeout(() => el?.classList.add("is-in"), 200 + i * 220));
+    });
 
-  const resetIntro = useCallback(() => {
-    clearTimers();
-    setFading(false);
-    setLogoIn(false);
-    setCtaIn(false);
-    onIntroChange(false);
-  }, [onIntroChange]);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // No motion: show a still 50/50 split with both labels.
+      markerRefs.current.forEach((el) => el?.classList.add("is-in"));
+      setWipe(box.current.vw * 0.5);
+      after?.classList.add("is-in");
+      return;
+    }
+
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    timers.current.push(
+      window.setTimeout(() => {
+        edge?.classList.add("is-on");
+        const t0 = performance.now();
+        const step = (now: number) => {
+          const p = Math.min(1, (now - t0) / HERO_SWEEP.sweep);
+          const x = ease(p) * (box.current.vw + 4);
+          setWipe(x);
+          if (p > 0.28) after?.classList.add("is-in");
+          if (before && x > before.offsetLeft - 8) before.classList.remove("is-in");
+          if (p < 1) {
+            raf.current = requestAnimationFrame(step);
+          } else {
+            edge?.classList.remove("is-on");
+            timers.current.push(window.setTimeout(() => setDone(true), 500));
+          }
+        };
+        raf.current = requestAnimationFrame(step);
+      }, HERO_SWEEP.hold),
+    );
+  }, [layout, setWipe]);
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setSkipMotion(reduce);
+    layout();
+    setWipe(0);
+    const media = mediaRef.current;
+    if (!media) return;
 
-    const el = sectionRef.current;
-    if (!el) return;
+    const ro = new ResizeObserver(() => layout());
+    ro.observe(media);
 
+    // Start the sweep the first time the hero is properly on screen.
     const io = new IntersectionObserver(
       ([entry]) => {
-        const enough = entry.isIntersecting && entry.intersectionRatio >= 0.4;
-        const gone = !entry.isIntersecting || entry.intersectionRatio < 0.15;
-
-        if (enough && !inViewRef.current) {
-          inViewRef.current = true;
-          if (reduce) {
-            snapDone();
-            return;
-          }
-          setPlayId((n) => n + 1);
-        } else if (gone && inViewRef.current) {
-          inViewRef.current = false;
-          resetIntro();
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.4 && !started.current) {
+          started.current = true;
+          play();
         }
       },
-      { threshold: [0, 0.15, 0.4, 0.6] },
+      { threshold: [0, 0.4] },
     );
+    io.observe(media);
 
-    io.observe(el);
     return () => {
+      ro.disconnect();
       io.disconnect();
-      clearTimers();
+      cancelAnimationFrame(raf.current);
+      timers.current.forEach((id) => window.clearTimeout(id));
     };
-  }, [resetIntro, snapDone]);
-
-  useEffect(() => {
-    if (playId === 0 || skipMotion) return;
-
-    resetIntro();
-
-    const tFade = window.setTimeout(() => setFading(true), HERO_MS.dirtyHold);
-    const tLogo = window.setTimeout(() => setLogoIn(true), HERO_MS.dirtyHold + HERO_MS.fade + HERO_MS.cleanHold);
-    const tDone = window.setTimeout(
-      () => {
-        setCtaIn(true);
-        onIntroChange(true);
-      },
-      HERO_MS.dirtyHold + HERO_MS.fade + HERO_MS.cleanHold + HERO_MS.logoSpin,
-    );
-
-    timers.current = [tFade, tLogo, tDone];
-    return () => clearTimers();
-  }, [playId, skipMotion, resetIntro, onIntroChange]);
+  }, [layout, setWipe, play]);
 
   return (
-    <section ref={sectionRef} id="top" className="hero-cinematic relative min-h-[100svh] overflow-hidden bg-navy-deep">
-      <div className="absolute inset-0">
-        <img
-          src={IMG.beforeRoof}
-          alt="Asphalt shingle roof heavily stained with black algae streaks before cleaning"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <img
-          src={IMG.afterRoof}
-          alt="The same roof clean and streak-free after a Roof Shampoo treatment"
-          className={`hero-clean absolute inset-0 h-full w-full object-cover ${fading ? "is-fading" : ""}`}
-        />
+    <section id="top" className="hero-sweep">
+      <div ref={mediaRef} className="hero-sweep-media">
+        <div ref={stageRef} className="hero-sweep-stage">
+          <img src={IMG.afterRoof} alt="The same roof after a Roof Shampoo treatment: clean, even dark shingles" />
+          <img
+            ref={dirtyRef}
+            src={IMG.dirtyRoof}
+            alt="Roof covered in moss, green algae and black streaks before cleaning"
+            className="hero-sweep-dirty"
+          />
+          {HERO_MARKERS.map((m, i) => (
+            <div
+              key={m.label}
+              ref={(el) => {
+                markerRefs.current[i] = el;
+              }}
+              className="hero-sweep-marker"
+              style={{ left: `${m.x}%`, top: `${m.y}%` }}
+              aria-hidden="true"
+            >
+              <span className="hero-sweep-marker-ring" />
+              <span className="hero-sweep-marker-tag">{m.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div ref={edgeRef} className="hero-sweep-edge" aria-hidden="true">
+          <span className="hero-sweep-nozzle">
+            <svg viewBox="0 0 24 24" className="h-7 w-7" aria-hidden="true">
+              <path d="M12 2.5c-.3 0-.6.2-.8.4C9.6 5 6 9.8 6 14a6 6 0 0 0 12 0c0-4.2-3.6-9-5.2-11.1-.2-.2-.5-.4-.8-.4z" fill="currentColor" />
+              <path d="M9.5 14.5a2.6 2.6 0 0 0 2.5 2.5" stroke="#fff" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+            </svg>
+          </span>
+          {Array.from({ length: 14 }, (_, i) => (
+            <span
+              key={i}
+              className="hero-sweep-drop"
+              style={
+                {
+                  top: `${8 + ((i * 37) % 84)}%`,
+                  "--dx": `${-30 - ((i * 23) % 60)}px`,
+                  "--dy": `${((i * 13) % 40) - 20}px`,
+                  animationDelay: `${(i % 7) * 0.1}s`,
+                } as CSSProperties
+              }
+            />
+          ))}
+        </div>
+
+        <div ref={beforeRef} className="hero-sweep-label hero-sweep-label-before">
+          <span className="hero-sweep-dot" />
+          <strong>BEFORE</strong>
+          <span className="hero-sweep-label-text">Moss · algae · black streaks</span>
+        </div>
+        <div ref={afterRef} className="hero-sweep-label hero-sweep-label-after">
+          <span className="hero-sweep-dot" />
+          <strong>AFTER</strong>
+          <span className="hero-sweep-label-text">One Roof Shampoo treatment</span>
+        </div>
+
+        <button type="button" className={`hero-sweep-replay ${done ? "is-in" : ""}`} onClick={play} aria-label="Watch the roof cleaning again">
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+          Watch again
+        </button>
       </div>
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/15 to-transparent" />
+      <div className="hero-sweep-shade" aria-hidden="true" />
 
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6">
-        <div className={`hero-lockup text-center ${logoIn ? "is-in" : ""}`}>
-          <div className="hero-mascot-frame">
-            <img
-              src={IMG.mascot}
-              alt="SaveYourRoof.com"
-              className="hero-mascot mx-auto h-auto w-full"
-            />
-            <span className="hero-mascot-com" aria-hidden="true">.COM</span>
+      <div className="hero-sweep-copy">
+        <div className="hero-sweep-copy-main">
+          <p className="eyebrow hero-sweep-eyebrow">Western PA · Non-bleach roof cleaning</p>
+          <h1 className="hero-sweep-title">
+            MOSS, ALGAE &amp; STREAKS GONE. <span className="text-green">NO BLEACH. EVER.</span>
+          </h1>
+          <p className="hero-sweep-sub">
+            A soft, low-pressure wash that takes your roof from stained to like-new in one visit, and is safe for pets, plants and your shingles.
+          </p>
+          <div className="hero-sweep-ctas">
+            <button type="button" className="btn-green px-6 py-3.5 text-[16px]" onClick={() => scrollToId("quote")}>
+              Get a Free Quote
+            </button>
+            <a href={TEL} className="hero-sweep-call">
+              <PhoneIcon className="h-4 w-4 text-white" />
+              Call {PHONE}
+            </a>
           </div>
-          <p className="hero-mascot-tagline">CLEAN · RESTORE · SAVE $</p>
         </div>
-
-        <div className={`hero-cta mt-8 ${ctaIn ? "is-in" : ""}`}>
-          <button
-            type="button"
-            className="btn-green px-6 py-3 text-sm tracking-wide md:text-[15px]"
-            onClick={() => scrollToId("quote")}
-          >
-            Get a Quote
-          </button>
-        </div>
+        <ul className="hero-sweep-trust">
+          <li>
+            <Check />
+            No bleach, no phosphates
+          </li>
+          <li>
+            <Check />
+            Pet, plant &amp; people safe
+          </li>
+          <li>
+            <Check />
+            No pressure damage to shingles
+          </li>
+        </ul>
       </div>
     </section>
   );
@@ -957,20 +1074,32 @@ function MobileBar() {
   );
 }
 
+/** Publishes the fixed header's height as --header-h so the hero starts below it. */
+function useHeaderOffset() {
+  useEffect(() => {
+    const header = document.querySelector<HTMLElement>("header");
+    if (!header) return;
+    const update = () => document.documentElement.style.setProperty("--header-h", `${header.offsetHeight}px`);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
+}
+
 /* ------------------------------------------------------------------ */
 /*  PAGE                                                               */
 /* ------------------------------------------------------------------ */
 
 export default function SaveYourRoof() {
   useReveal();
-  const [headerIn, setHeaderIn] = useState(false);
-  const onIntroChange = useCallback((done: boolean) => setHeaderIn(done), []);
+  useHeaderOffset();
 
   return (
     <div className="min-h-screen bg-white pb-[72px] md:pb-0">
-      <Header revealed={headerIn} />
+      <Header revealed />
       <main>
-        <Hero onIntroChange={onIntroChange} />
+        <Hero />
         <WhyBand />
         <Problem />
         <Difference />
