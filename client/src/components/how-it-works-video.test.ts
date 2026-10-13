@@ -91,14 +91,17 @@ describe("How It Works supplied video player", () => {
     expect(landingPage).toContain("lifespan-card");
     expect(landingPage).toContain("safety-card");
     expect(landingPage).toContain("safety-card-icon");
+    expect(landingPage).toContain("problem-card reveal");
     expect(styles).toContain(".lifespan-card:hover");
     expect(styles).toContain(".lifespan-card:focus-within");
-    expect(styles).toContain(".safety-card {\n  border: 1px solid transparent;");
+    expect(styles).toContain(".safety-card,\n.problem-card {\n  border: 1px solid transparent;");
     expect(styles).toContain(".safety-card:hover,");
     expect(styles).toContain(".safety-card:focus-within");
+    expect(styles).toContain(".problem-card:hover");
+    expect(styles).toContain(".problem-card:focus-within");
     expect(styles).toContain(".safety-card:hover .safety-card-icon");
     expect(styles).toContain(".safety-card:focus-within .safety-card-icon");
-    expect(styles).toContain(".lifespan-card,\n  .safety-card,\n  .safety-card-icon,\n  .restore-learn-more {\n    transition: none;");
+    expect(styles).toContain(".lifespan-card,\n  .safety-card,\n  .problem-card,\n  .safety-card-icon,\n  .restore-learn-more {\n    transition: none;");
   });
 
   it("enhances primary CTA hover, focus, press, and reduced-motion feedback", () => {

@@ -515,7 +515,7 @@ function Problem() {
 
         <ul className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {PROBLEMS.map((p, i) => (
-            <li key={p.n} className="reveal overflow-hidden rounded-xl border border-white/15 bg-white/[0.06] backdrop-blur-sm" data-reveal-delay={i * 90}>
+            <li key={p.n} className="problem-card reveal overflow-hidden rounded-xl border border-white/15 bg-white/[0.06] backdrop-blur-sm" data-reveal-delay={i * 90}>
               <div className="aspect-square overflow-hidden">
                 <img src={p.img} alt={p.alt} loading="lazy" className="h-full w-full object-cover" />
               </div>
