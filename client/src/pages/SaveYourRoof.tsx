@@ -132,8 +132,8 @@ function Header({ revealed }: { revealed: boolean }) {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 bg-white shadow-[0_2px_16px_-6px_rgba(18,58,92,0.35)] transition-opacity duration-500 ${
-        revealed ? "opacity-100" : "pointer-events-none opacity-0"
+      className={`fixed inset-x-0 top-0 z-50 bg-white shadow-[0_2px_16px_-6px_rgba(18,58,92,0.35)] transition-[transform,opacity] duration-300 ease-out ${
+        revealed ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
       }`}
     >
       <div className="shell relative flex flex-col items-center gap-2 py-3 md:gap-3 md:py-4">
@@ -1087,6 +1087,22 @@ function useHeaderOffset() {
   }, []);
 }
 
+/** True while any part of the hero is still visible below the header; the header slides away once the hero is scrolled past. */
+function useHeaderOverHero() {
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    const hero = document.getElementById("top");
+    const header = document.querySelector<HTMLElement>("header");
+    if (!hero || !header) return;
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
+      rootMargin: `-${header.offsetHeight}px 0px 0px 0px`,
+    });
+    io.observe(hero);
+    return () => io.disconnect();
+  }, []);
+  return visible;
+}
+
 /* ------------------------------------------------------------------ */
 /*  PAGE                                                               */
 /* ------------------------------------------------------------------ */
@@ -1094,10 +1110,11 @@ function useHeaderOffset() {
 export default function SaveYourRoof() {
   useReveal();
   useHeaderOffset();
+  const headerIn = useHeaderOverHero();
 
   return (
     <div className="min-h-screen bg-white pb-[72px] md:pb-0">
-      <Header revealed />
+      <Header revealed={headerIn} />
       <main>
         <Hero />
         <WhyBand />
