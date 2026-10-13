@@ -144,7 +144,7 @@ function Header({ revealed }: { revealed: boolean }) {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
-          <img src={IMG.siteLogo} alt="SaveYourRoof.com" className="h-auto w-[144px] object-contain md:w-[176px]" />
+          <img src={IMG.siteLogo} alt="SaveYourRoof.com" width={176} height={176} className="h-[144px] w-[144px] object-contain md:h-[176px] md:w-[176px]" />
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-5 lg:flex">
