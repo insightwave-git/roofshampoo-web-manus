@@ -144,7 +144,7 @@ function Header({ revealed }: { revealed: boolean }) {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
-          <img src={IMG.siteLogo} alt="SaveYourRoof.com" width={176} height={176} className="h-[144px] w-[144px] object-contain md:h-[176px] md:w-[176px]" />
+          <img src={IMG.siteLogo} alt="SaveYourRoof.com" width={264} height={264} className="h-[216px] w-[216px] object-contain md:h-[220px] md:w-[220px] lg:h-[264px] lg:w-[264px]" />
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-5 lg:flex">
@@ -721,7 +721,7 @@ function Lifespan() {
         <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
           <figure className="lifespan-card reveal overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-navy/10">
             <div className="relative aspect-[4/3] w-full overflow-hidden">
-              <img src={IMG.roofNeglected} alt="Roof covered in moss and black algae streaks" loading="lazy" className="h-full w-full object-cover" />
+              <img src={IMG.dirtyRoof} alt="Same roof before cleaning, covered in moss, green algae and black streaks" loading="lazy" className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-navy/80 to-transparent p-5 pb-10">
                 <p className="font-display text-lg font-extrabold text-white md:text-xl">Neglected: moss and black streaks left untreated</p>
               </div>
@@ -733,7 +733,7 @@ function Lifespan() {
 
           <figure className="lifespan-card reveal overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-navy/10" data-reveal-delay={120}>
             <div className="relative aspect-[4/3] w-full overflow-hidden">
-              <img src={IMG.roofMaintained} alt="Professionally cleaned roof in like-new condition" loading="lazy" className="h-full w-full object-cover" />
+              <img src={IMG.afterRoof} alt="Same roof after cleaning, with clean, even dark shingles" loading="lazy" className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-navy/80 to-transparent p-5 pb-10">
                 <p className="font-display text-lg font-extrabold text-white md:text-xl">Cleaned properly: full rated life reached</p>
               </div>
